@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Web Env",
+  "version": "1.0.0",
+  "description": "浏览器环境变量",
+  "author": "Gj",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_title": "Web Env",
+    "default_popup": "popups/popup.html",
+    "default_icon": {
+      "32": "icons/32.png",
+      "48": "icons/48.png",
+      "128": "icons/128.png"
+    }
+  },
+  "devtools_page": "devtools/devtools.html"
+}
