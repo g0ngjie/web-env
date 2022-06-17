@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from "vue";
+import Devtools from "@/devtools/index";
 const env = ref("");
 const timeEnv = ref(0);
 const setEnv = () => {
@@ -18,7 +19,8 @@ const setEnv = () => {
 </script>
 
 <template>
-  {{ env }}
+  <!-- {{ env }}
   {{ timeEnv }}
-  <button @click="setEnv">setEnv1</button>
+  <button @click="setEnv">setEnv1</button> -->
+  <Devtools />
 </template>
