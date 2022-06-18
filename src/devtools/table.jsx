@@ -6,7 +6,7 @@ import {
   NSwitch,
   NSpace,
 } from "naive-ui";
-import { tableData } from "./hooks/index";
+import { useData } from "./store/data";
 
 const { message } = createDiscreteApi(["message"]);
 export default defineComponent({
@@ -57,6 +57,8 @@ export default defineComponent({
       },
     ];
 
+    const store = useData();
+
     return () => {
       return (
         <NDataTable
@@ -70,7 +72,7 @@ export default defineComponent({
               message.info(`Play ${row.title}`);
             },
           })}
-          data={tableData}
+          data={store.tableData}
         />
       );
     };
