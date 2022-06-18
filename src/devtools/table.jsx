@@ -14,7 +14,7 @@ export default defineComponent({
     const createColumns = ({ play }) => [
       {
         title: "switch",
-        width: "100",
+        width: "70",
         render: (row) => (
           <NSwitch
             size="small"
@@ -24,11 +24,11 @@ export default defineComponent({
           />
         ),
       },
-      { title: "title", key: "title" },
-      { title: "description", key: "description" },
+      { title: "title", minWidth: "200", key: "title" },
+      { title: "description", minWidth: "200", key: "description" },
       {
         title: "options",
-        width: "150",
+        width: "120",
         fixed: "right",
         render(row) {
           return (
