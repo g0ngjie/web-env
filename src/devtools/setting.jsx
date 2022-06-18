@@ -126,8 +126,16 @@ export default defineComponent({
                       style={{ minWidth: "200px" }}
                       rule={{
                         required: true,
-                        message: "key is required",
                         trigger: ["blur"],
+                        validator() {
+                          if (item.key === "") {
+                            return new Error("key is required");
+                          }
+                          const firstChar = item.key.charAt(0);
+                          if (isNumber(item.key) || isNumber(firstChar)) {
+                            return new Error("key cannot be a number type");
+                          }
+                        },
                       }}
                     >
                       <NInput
