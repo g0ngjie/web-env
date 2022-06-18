@@ -18,7 +18,7 @@ export default defineComponent({
       return (
         <NConfigProvider theme={store.theme}>
           <div class={styl.container}>
-            <NSpace justify="space-between">
+            <NSpace justify="space-between" style={{ marginBottom: "10px" }}>
               <NButton
                 size="tiny"
                 type="primary"
