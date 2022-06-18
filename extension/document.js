@@ -42,7 +42,7 @@ window.addEventListener(
         const data = event.data;
         if (data.type === "__set_envs" && data.to === "document") {
             console.log("[debug]document: data:", data)
-            setDynamicEnv(data.value.globalKey, data.value.envs)
+            setWindowEnv(data.value.globalKey, data.value.envs)
         }
     },
     false
