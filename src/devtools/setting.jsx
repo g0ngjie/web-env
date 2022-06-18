@@ -4,12 +4,16 @@ import {
   NDrawerContent,
   NForm,
   NFormItem,
+  NInputGroup,
   NInput,
+  NSelect,
   NButton,
   NSpace,
   NAlert,
 } from "naive-ui";
+import { EnvFieldType as Type } from "./common/enum";
 import { useData } from "./store/data";
+import { isNumber } from "@alrale/common-lib";
 
 export default defineComponent({
   props: {
@@ -25,6 +29,21 @@ export default defineComponent({
   setup(props) {
     const store = useData();
     const formRef = ref(null);
+
+    const options = ref([
+      {
+        label: Type.String,
+        value: Type.String,
+      },
+      {
+        label: Type.Number,
+        value: Type.Number,
+      },
+      {
+        label: Type.Boolean,
+        value: Type.Boolean,
+      },
+    ]);
 
     const handleSubmit = () => {
       formRef.value?.validate((errors) => {
@@ -104,11 +123,11 @@ export default defineComponent({
                     <NFormItem
                       label-placement="left"
                       path={`dynamicEnvs[${index}].key`}
-                      style={{ width: "150px" }}
+                      style={{ minWidth: "200px" }}
                       rule={{
                         required: true,
                         message: "key is required",
-                        trigger: ["input", "blur"],
+                        trigger: ["blur"],
                       }}
                     >
                       <NInput
@@ -116,20 +135,48 @@ export default defineComponent({
                         placeholder="please input key"
                       />
                     </NFormItem>
+                    :
                     <NFormItem
                       label-placement="left"
                       path={`dynamicEnvs[${index}].value`}
-                      style={{ width: "200px" }}
+                      style={{ minWidth: "400px" }}
                       rule={{
                         required: true,
-                        message: "env is required",
-                        trigger: ["input", "blur"],
+                        trigger: ["blur"],
+                        validator() {
+                          console.log(item.type, "type");
+                          console.log(item.value, "valute");
+                          if (item.value === "") {
+                            return new Error("env is required");
+                          }
+                          if (
+                            item.type === Type.Number &&
+                            !isNumber(item.value)
+                          ) {
+                            return new Error("env must be of type number");
+                          }
+                          if (
+                            item.type === Type.Boolean &&
+                            !["true", "false"].includes(item.value)
+                          ) {
+                            return new Error(
+                              "env must be a boolean type of true or false"
+                            );
+                          }
+                        },
                       }}
                     >
-                      <NInput
-                        v-model:value={item.value}
-                        placeholder="please input env"
-                      />
+                      <NInputGroup>
+                        <NSelect
+                          style={{ width: "130px" }}
+                          v-model:value={item.type}
+                          options={options.value}
+                        />
+                        <NInput
+                          v-model:value={item.value}
+                          placeholder="please input env"
+                        />
+                      </NInputGroup>
                     </NFormItem>
                     {index === 0 && (
                       <NButton
