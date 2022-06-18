@@ -20,7 +20,7 @@ export default defineComponent({
       return (
         <NDrawer
           width="99%"
-          placement="right"
+          placement="left"
           v-model:show={props.visible.value}
           on-esc={props.onClose}
         >
