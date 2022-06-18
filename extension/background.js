@@ -1,12 +1,21 @@
-// Copyright 2021 Google LLC
-//
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file or at
-// https://developers.google.com/open-source/licenses/bsd
+console.log("[debug]background ready:")
 
-// Show the demo page once the extension is installed
-// chrome.runtime.onInstalled.addListener((_reason) => {
-//   chrome.tabs.create({
-//     url: 'demo/index.html'
-//   });
-// });
+// 接收document传来的信息，转发给content
+chrome.runtime.onMessage.addListener((msg) => {
+    if (msg.type === "__set_envs" && msg.to === "background") {
+        console.log("[debug]接收background-msg:", msg)
+        // webEnvPort.postMessage({
+        //     type: "__set_envs",
+        //     to: "content",
+        //     value: msg.value,
+        // });
+
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            chrome.tabs.sendMessage(tabs[0].id, {
+                type: "__set_envs",
+                to: "content",
+                value: msg.value,
+            });
+        });
+    }
+});

@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import { EnvFieldType } from "../common/enum";
+import { notice } from "./chrome";
+import { isObject } from "@alrale/common-lib";
 import { tableData as list } from "./mock";
 
 export const useData = defineStore('data', () => {
@@ -57,7 +59,7 @@ export const useData = defineStore('data', () => {
     const merge = Object.assign
 
     // dynamic set window env
-    const setDynamicEnv = (index = 0, arr = [], envs = {}, target = window) => {
+    const setDynamicEnv = (index = 0, arr = [], envs, target = window) => {
         const key = arr[index]
         if (index < arr.length - 1) {
             if (target[key] === undefined) {
@@ -68,7 +70,9 @@ export const useData = defineStore('data', () => {
             if (target[key] === undefined) {
                 target[key] = envs
             } else {
-                target[key] = merge(target[key], envs)
+                if (isObject(envs))
+                    target[key] = merge(target[key], envs)
+                else target[key] = envs
             }
         }
     }
@@ -97,8 +101,10 @@ export const useData = defineStore('data', () => {
             dynamicEnvs,
             env: JSON.stringify(envs),
         })
-        setWindowEnv(globalKey, envs)
+        // setWindowEnv(globalKey, envs)
+
         formReset()
+        notice(globalKey, envs)
     }
 
     // form reset
