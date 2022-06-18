@@ -14,6 +14,7 @@ export default defineComponent({
     const createColumns = ({ play }) => [
       {
         title: "switch",
+        width: "100",
         render: (row) => (
           <NSwitch
             size="small"
@@ -27,6 +28,8 @@ export default defineComponent({
       { title: "description", key: "description" },
       {
         title: "options",
+        width: "150",
+        fixed: "right",
         render(row) {
           return (
             <>
@@ -57,8 +60,11 @@ export default defineComponent({
     return () => {
       return (
         <NDataTable
+          size="small"
           bordered={false}
           striped
+          single-line={false}
+          scroll-x={500}
           columns={createColumns({
             play(row) {
               message.info(`Play ${row.title}`);
