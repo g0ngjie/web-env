@@ -144,8 +144,6 @@ export default defineComponent({
                         required: true,
                         trigger: ["blur"],
                         validator() {
-                          console.log(item.type, "type");
-                          console.log(item.value, "valute");
                           if (item.value === "") {
                             return new Error("env is required");
                           }
@@ -184,6 +182,7 @@ export default defineComponent({
                         type="primary"
                         ghost
                         onClick={store.addEnv}
+                        style={{ marginTop: "3px" }}
                       >
                         add
                       </NButton>
