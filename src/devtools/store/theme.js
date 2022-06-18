@@ -1,7 +1,7 @@
 
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { darkTheme } from "naive-ui";
+import { darkTheme, lightTheme } from "naive-ui";
 import { Theme } from "../common/enum";
 
 function setBg(color) {
@@ -9,7 +9,7 @@ function setBg(color) {
 }
 
 export const useTheme = defineStore('theme', () => {
-    const theme = ref(null)
+    const theme = ref(lightTheme)
     const isDark = ref(false)
     function setTheme(type) {
         const { Dark, Light } = Theme
@@ -22,7 +22,7 @@ export const useTheme = defineStore('theme', () => {
             case Light:
                 isDark.value = false
                 setBg('#ffffff');
-                theme.value = null
+                theme.value = lightTheme
                 break;
         }
     }

@@ -8,6 +8,7 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
+    "@alrale/common-lib": "^1.0.75",
     "@vueuse/core": "^8.7.3",
     "pinia": "^2.0.14",
     "vue": "^3.2.25"

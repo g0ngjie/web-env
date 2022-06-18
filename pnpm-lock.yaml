@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@alrale/common-lib': ^1.0.75
   '@vitejs/plugin-vue': ^2.3.3
   '@vitejs/plugin-vue-jsx': ^1.3.10
   '@vueuse/core': ^8.7.3
@@ -12,6 +13,7 @@ specifiers:
   vue: ^3.2.25
 
 dependencies:
+  '@alrale/common-lib': 1.0.75
   '@vueuse/core': 8.7.3_vue@3.2.37
   pinia: 2.0.14_vue@3.2.37
   vue: 3.2.37
@@ -25,6 +27,10 @@ devDependencies:
   vite-plugin-static-copy: 0.5.1_vite@2.9.12
 
 packages:
+
+  /@alrale/common-lib/1.0.75:
+    resolution: {integrity: sha512-4lB5m7nC1MjejLHN6zzIAh4ay/Mz9XWJA0uoay2Hj9r6R8ezAuE3YEvVmMCWLe92UQFxAlc/JiWodSQB6/VEXg==}
+    dev: false
 
   /@ampproject/remapping/2.2.0:
     resolution: {integrity: sha512-qRmjj8nj9qmLTQXXmaR1cck3UXSRMPrbsLJAasZpF+t3riI71BXed5ebIOYwQntykeZuhjsdweEc9BxH5Jc26w==}

@@ -1,4 +1,4 @@
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import {
   NDataTable,
   NButton,
@@ -7,10 +7,16 @@ import {
   NSpace,
 } from "naive-ui";
 import { useData } from "./store/data";
+import { useTheme } from "./store/theme";
 
-const { message } = createDiscreteApi(["message"]);
 export default defineComponent({
   setup() {
+    const message = computed(() => {
+      const discrete = createDiscreteApi(["message"], {
+        configProviderProps: { theme: useTheme().theme },
+      });
+      return discrete.message;
+    });
     const createColumns = ({ play }) => [
       {
         title: "switch",
@@ -24,6 +30,7 @@ export default defineComponent({
           />
         ),
       },
+      { title: "globalKey", minWidth: "120", key: "globalKey" },
       { title: "title", minWidth: "200", key: "title" },
       { title: "description", minWidth: "200", key: "description" },
       {
@@ -69,7 +76,7 @@ export default defineComponent({
           scroll-x={500}
           columns={createColumns({
             play(row) {
-              message.info(`Play ${row.title}`);
+              message.value.info(`Play ${row.title}`);
             },
           })}
           data={store.tableData}

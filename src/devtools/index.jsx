@@ -22,7 +22,7 @@ export default defineComponent({
                 ghost
                 onClick={() => (showSetting.value = true)}
               >
-                add
+                create
               </NButton>
               <ThemeIcon />
             </NSpace>
