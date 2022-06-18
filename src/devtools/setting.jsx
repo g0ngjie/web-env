@@ -63,7 +63,17 @@ export default defineComponent({
                   placeholder="please input title"
                 />
               </NFormItem>
-              <NFormItem label="globalKey">
+              <NFormItem
+                label="globalKey"
+                rule={{
+                  trigger: ["input", "blur"],
+                  validator() {
+                    if (store.form.globalKey.toLowerCase() === "window") {
+                      return new Error("globalKey can not be window");
+                    }
+                  },
+                }}
+              >
                 <NInput
                   v-model:value={store.form.globalKey}
                   style={{ width: "300px" }}
