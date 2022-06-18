@@ -12,7 +12,7 @@ export default defineComponent({
         <>
           {!store.isDark ? (
             <NIcon
-              size="28"
+              size="25"
               class={styl.icon}
               onClick={() => store.setTheme(Theme.Dark)}
             >
@@ -38,7 +38,7 @@ export default defineComponent({
             </NIcon>
           ) : (
             <NIcon
-              size="28"
+              size="25"
               class={styl.icon}
               onClick={() => store.setTheme(Theme.Light)}
             >

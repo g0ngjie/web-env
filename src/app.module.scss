@@ -12,4 +12,5 @@
   transition: 0.35s var(--cubic-bezier-ease-in-out);
   height: 100%;
   width: 100%;
+  overflow-y: scroll;
 }
