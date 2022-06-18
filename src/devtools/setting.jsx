@@ -13,9 +13,6 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const show = () => {
-      console.log("show");
-    };
     return () => {
       return (
         <NDrawer
