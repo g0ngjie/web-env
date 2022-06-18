@@ -175,18 +175,21 @@ export default defineComponent({
                           placeholder="please input env"
                         />
                       </NInputGroup>
+
+                      {index === 0 ? (
+                        <NButton type="primary" ghost onClick={store.addEnv}>
+                          o
+                        </NButton>
+                      ) : (
+                        <NButton
+                          type="error"
+                          ghost
+                          onClick={() => store.removeEnv(index)}
+                        >
+                          x
+                        </NButton>
+                      )}
                     </NFormItem>
-                    {index === 0 && (
-                      <NButton
-                        size="tiny"
-                        type="primary"
-                        ghost
-                        onClick={store.addEnv}
-                        style={{ marginTop: "3px" }}
-                      >
-                        add
-                      </NButton>
-                    )}
                   </NSpace>
                 );
               })}
