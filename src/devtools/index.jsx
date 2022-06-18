@@ -10,6 +10,9 @@ export default defineComponent({
   setup() {
     const store = useTheme();
     const showSetting = ref(false);
+    const openModal = () => {
+      showSetting.value = true;
+    };
 
     return () => {
       return (
@@ -26,7 +29,7 @@ export default defineComponent({
               </NButton>
               <ThemeIcon />
             </NSpace>
-            <Table />
+            <Table openModal={openModal} />
             <Setting
               visible={showSetting}
               onClose={() => (showSetting.value = false)}

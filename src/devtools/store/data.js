@@ -107,6 +107,17 @@ export const useData = defineStore('data', () => {
         envWarning.value = ''
     }
 
+    // delete table row
+    const deleteRow = (index) => {
+        tableData.value.splice(index, 1)
+    }
+
+    // edit table row
+    const editRow = (index) => {
+        const { title, description, globalKey, dynamicEnvs } = tableData.value[index]
+        form.value = { title, description, globalKey, dynamicEnvs }
+    }
+
     return {
         tableData,
         form,
@@ -116,5 +127,7 @@ export const useData = defineStore('data', () => {
         validateEnv,
         submit,
         formReset,
+        deleteRow,
+        editRow,
     }
 })

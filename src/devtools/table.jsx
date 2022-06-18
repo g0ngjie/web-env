@@ -10,14 +10,20 @@ import { useData } from "./store/data";
 import { useTheme } from "./store/theme";
 
 export default defineComponent({
-  setup() {
+  props: {
+    openModal: {
+      type: Function,
+      default: () => {},
+    },
+  },
+  setup(props) {
     const message = computed(() => {
       const discrete = createDiscreteApi(["message"], {
         configProviderProps: { theme: useTheme().theme },
       });
       return discrete.message;
     });
-    const createColumns = ({ play }) => [
+    const createColumns = ({ play, delFn, editFn }) => [
       {
         title: "switch",
         width: "70",
@@ -37,7 +43,7 @@ export default defineComponent({
         title: "options",
         width: "120",
         fixed: "right",
-        render(row) {
+        render(_, index) {
           return (
             <>
               <NSpace>
@@ -45,7 +51,7 @@ export default defineComponent({
                   ghost
                   size="tiny"
                   type="info"
-                  onClick={() => play(row)}
+                  onClick={() => editFn(index)}
                 >
                   edit
                 </NButton>
@@ -53,7 +59,7 @@ export default defineComponent({
                   ghost
                   type="error"
                   size="tiny"
-                  onClick={() => play(row)}
+                  onClick={() => delFn(index)}
                 >
                   delete
                 </NButton>
@@ -77,6 +83,11 @@ export default defineComponent({
           columns={createColumns({
             play(row) {
               message.value.info(`Play ${row.title}`);
+            },
+            delFn: (index) => store.deleteRow(index),
+            editFn: (index) => {
+              store.editRow(index);
+              props.openModal();
             },
           })}
           data={store.tableData}
