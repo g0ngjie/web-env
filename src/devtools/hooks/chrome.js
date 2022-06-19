@@ -6,8 +6,4 @@ export function useNoticeEnv(globalKey, envs, bool) {
         to: "background",
         value: { globalKey, envs, bool }
     });
-
-    // chrome.runtime.sendMessage({ 'cmd': 'to_content' }, function () {
-    //     console.log('调用成功')
-    // })
 }

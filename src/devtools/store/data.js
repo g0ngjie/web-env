@@ -76,18 +76,18 @@ export const useData = defineStore('data', () => {
     }
     // packaging environment variables
     const packagingEnv = (envs) => {
-        let target
+        let target = {}
         envs.forEach(item => {
             const { type, key, value } = item
             switch (type) {
                 case EnvFieldType.String:
-                    target = { [key]: value }
+                    target[key] = value
                     break;
                 case EnvFieldType.Number:
-                    target = { [key]: +value }
+                    target[key] = +value
                     break;
                 case EnvFieldType.Boolean:
-                    target = { [key]: { 'true': true, 'false': false }[value] }
+                    target[key] = { 'true': true, 'false': false }[value]
                     break;
             }
         })
@@ -99,6 +99,8 @@ export const useData = defineStore('data', () => {
         const { title, description, globalKey, dynamicEnvs } = form.value
         if (isEdit) {
             const index = tableData.value.findIndex(item => item.id === form.value.id)
+            // reset switchOn
+            form.value.switchOn = false
             tableData.value[index] = form.value
         } else {
             tableData.value.push({
