@@ -148,11 +148,14 @@ export const useData = defineStore('data', () => {
 
     // clean all env
     const cleanAllEnv = () => {
-        tableData.value.forEach(item => {
+        for (let i = 0; i < tableData.value.length; i++) {
+            const item = tableData.value[i];
             item.switchOn = false
             const envs = packagingEnv(item.dynamicEnvs)
             useNoticeRmEnv(item.globalKey, envs)
-        })
+        }
+        // 同步数据
+        syncEnv(tableData.value)
     }
 
     return {
