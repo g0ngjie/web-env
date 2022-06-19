@@ -15,9 +15,7 @@ export const useTheme = defineStore('theme', () => {
     const isDark = ref(false)
 
     // 同步主题
-    const syncTheme = (theme) => {
-        chrome.storage?.local.set({ [__ENV_THEME_KEY__]: theme })
-    }
+    const syncTheme = (theme) => chrome.storage?.local.set({ [__ENV_THEME_KEY__]: theme })
 
     // 初始化加载
     onBeforeMount(() => {

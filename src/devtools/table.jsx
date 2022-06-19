@@ -23,16 +23,16 @@ export default defineComponent({
       });
       return discrete.message;
     });
-    const createColumns = ({ play, delFn, editFn }) => [
+    const createColumns = ({ delFn, editFn, switchFn }) => [
       {
         title: "switch",
         width: "70",
-        render: (row) => (
+        render: (row, index) => (
           <NSwitch
             size="small"
-            v-model:value={row.switch}
+            v-model:value={row.switchOn}
             round={false}
-            onClick={() => play(row)}
+            onUpdate:value={(bool) => switchFn(index, bool)}
           />
         ),
       },
@@ -81,9 +81,7 @@ export default defineComponent({
           single-line={false}
           scroll-x={500}
           columns={createColumns({
-            play(row) {
-              message.value.info(`Play ${row.title}`);
-            },
+            switchFn: (index, bool) => store.editSwitch(index, bool),
             delFn: (index) => store.deleteRow(index),
             editFn: (index) => {
               store.editRow(index);

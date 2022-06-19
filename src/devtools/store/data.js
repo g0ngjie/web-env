@@ -1,20 +1,57 @@
 
-import { ref, watch } from "vue";
+import { ref, watch, onBeforeMount } from "vue";
 import { defineStore } from "pinia";
 import { EnvFieldType } from "../common/enum";
 import { useNotice } from "../hooks/chrome";
-import { uuid } from "@alrale/common-lib";
+import { uuid, typeIs } from "@alrale/common-lib";
+
+const __ENV_DATA_KEY__ = "__ENV_DATA_KEY__"
+
+// ref 对象转换成数组
+function deepRefToList(ref) {
+    return ref.map(env => {
+        const target = {}
+        Object.keys(env).map(key => {
+            if (typeIs(env[key]) !== 'array') {
+                target[key] = env[key]
+            } else {
+                const envs = deepRefToList(env[key])
+                target[key] = envs
+            }
+        })
+        return target
+    })
+}
+
+// 同步数据
+function syncEnv(list) {
+    const data = deepRefToList(list)
+    chrome.storage?.local.set({ [__ENV_DATA_KEY__]: data })
+}
 
 export const useData = defineStore('data', () => {
     const tableData = ref([])
+
+    // 初始化加载
+    onBeforeMount(() => {
+        chrome.storage?.local.get([__ENV_DATA_KEY__], (res) => {
+            if (res[__ENV_DATA_KEY__] && typeIs(res[__ENV_DATA_KEY__]) === 'array') {
+                tableData.value = res[__ENV_DATA_KEY__]
+            }
+        })
+    })
+
     // form data
-    const form = ref({ title: '', description: '', globalKey: '', dynamicEnvs: [{ key: '', type: EnvFieldType.String, value: '' }] })
+    const form = ref({
+        id: '', switchOn: false, title: '',
+        description: '', globalKey: '',
+        dynamicEnvs: [{ key: '', type: EnvFieldType.String, value: '' }]
+    })
     // form env waring msg
     const envWarning = ref('')
 
-    watch(() => [...tableData.value], () => {
-        console.log("[debug]tableData.value:", tableData.value)
-    })
+    // 同步数据
+    watch(() => [...tableData.value], () => syncEnv(tableData.value))
 
     const addEnv = () => {
         const bool = validateEnv()
@@ -64,10 +101,11 @@ export const useData = defineStore('data', () => {
         const envs = packagingEnv()
         if (isEdit) {
             const index = tableData.value.findIndex(item => item.id === form.value.id)
-            tableData.value[index] = { title, description, globalKey, dynamicEnvs, envs }
+            tableData.value[index] = form.value
         } else {
             tableData.value.push({
                 id: uuid(),
+                switchOn: false,
                 title,
                 description,
                 globalKey,
@@ -80,7 +118,11 @@ export const useData = defineStore('data', () => {
 
     // form reset
     const formReset = () => {
-        form.value = { title: '', description: '', globalKey: '', dynamicEnvs: [{ key: '', type: EnvFieldType.String, value: '' }] }
+        form.value = {
+            id: '', switchOn: false, title: '',
+            description: '', globalKey: '',
+            dynamicEnvs: [{ key: '', type: EnvFieldType.String, value: '' }]
+        }
         envWarning.value = ''
     }
 
@@ -90,9 +132,13 @@ export const useData = defineStore('data', () => {
     }
 
     // edit table row
-    const editRow = (index) => {
-        const { id, title, description, globalKey, dynamicEnvs } = tableData.value[index]
-        form.value = { id, title, description, globalKey, dynamicEnvs }
+    const editRow = (index) => form.value = tableData.value[index]
+
+    // edit switch
+    const editSwitch = (index, bool) => {
+        // 同步数据
+        syncEnv(tableData.value)
+        tableData.value[index].switchOn = bool
     }
 
     return {
@@ -106,5 +152,6 @@ export const useData = defineStore('data', () => {
         formReset,
         deleteRow,
         editRow,
+        editSwitch,
     }
 })
