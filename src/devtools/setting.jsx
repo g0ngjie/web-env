@@ -21,6 +21,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    isEdit: {
+      type: Boolean,
+      default: false,
+    },
     onClose: {
       type: Function,
       default: () => {},
@@ -49,7 +53,7 @@ export default defineComponent({
       formRef.value?.validate((errors) => {
         store.validateEnv();
         if (!errors) {
-          store.submit();
+          store.submit(props.isEdit.value);
           props.onClose();
         }
       });

@@ -10,8 +10,10 @@ export default defineComponent({
   setup() {
     const store = useTheme();
     const showSetting = ref(false);
-    const openModal = () => {
+    const isEdit = ref(false);
+    const openModal = (bool) => {
       showSetting.value = true;
+      isEdit.value = bool;
     };
 
     return () => {
@@ -23,15 +25,16 @@ export default defineComponent({
                 size="tiny"
                 type="primary"
                 ghost
-                onClick={() => (showSetting.value = true)}
+                onClick={() => openModal(false)}
               >
                 create
               </NButton>
               <ThemeIcon />
             </NSpace>
-            <Table openModal={openModal} />
+            <Table openModal={() => openModal(true)} />
             <Setting
               visible={showSetting}
+              isEdit={isEdit}
               onClose={() => (showSetting.value = false)}
             />
           </div>

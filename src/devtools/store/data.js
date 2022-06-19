@@ -1,8 +1,9 @@
 
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { defineStore } from "pinia";
 import { EnvFieldType } from "../common/enum";
 import { useNotice } from "../hooks/chrome";
+import { uuid } from "@alrale/common-lib";
 
 export const useData = defineStore('data', () => {
     const tableData = ref([])
@@ -10,6 +11,10 @@ export const useData = defineStore('data', () => {
     const form = ref({ title: '', description: '', globalKey: '', dynamicEnvs: [{ key: '', type: EnvFieldType.String, value: '' }] })
     // form env waring msg
     const envWarning = ref('')
+
+    watch(() => [...tableData.value], () => {
+        console.log("[debug]tableData.value:", tableData.value)
+    })
 
     const addEnv = () => {
         const bool = validateEnv()
@@ -54,16 +59,21 @@ export const useData = defineStore('data', () => {
     }
 
     // form submit
-    const submit = () => {
+    const submit = (isEdit) => {
         const { title, description, globalKey, dynamicEnvs } = form.value
         const envs = packagingEnv()
-        tableData.value.push({
-            title,
-            description,
-            globalKey,
-            dynamicEnvs,
-            env: JSON.stringify(envs),
-        })
+        if (isEdit) {
+            const index = tableData.value.findIndex(item => item.id === form.value.id)
+            tableData.value[index] = { title, description, globalKey, dynamicEnvs, envs }
+        } else {
+            tableData.value.push({
+                id: uuid(),
+                title,
+                description,
+                globalKey,
+                dynamicEnvs,
+            })
+        }
         useNotice(globalKey, envs)
         formReset()
     }
@@ -81,8 +91,8 @@ export const useData = defineStore('data', () => {
 
     // edit table row
     const editRow = (index) => {
-        const { title, description, globalKey, dynamicEnvs } = tableData.value[index]
-        form.value = { title, description, globalKey, dynamicEnvs }
+        const { id, title, description, globalKey, dynamicEnvs } = tableData.value[index]
+        form.value = { id, title, description, globalKey, dynamicEnvs }
     }
 
     return {
