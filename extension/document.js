@@ -49,6 +49,11 @@ window.addEventListener(
             const { globalKey, envs, bool } = data.value
             setWindowEnv(globalKey, envs, !bool)
         }
+        if (data.type === "__remove_envs" && data.to === "document") {
+            console.log("[debug]__remove_envs document: data:", data.value)
+            const { globalKey, envs } = data.value
+            setWindowEnv(globalKey, envs, true)
+        }
         if (data.type === "__init_envs" && data.to === "document") {
             console.log("[debug]__init_envs document: data:", data.value)
             Object.keys(data.value || {}).forEach(globalKey => {

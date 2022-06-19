@@ -2,7 +2,7 @@
 import { ref, watch, onBeforeMount } from "vue";
 import { defineStore } from "pinia";
 import { EnvFieldType } from "../common/enum";
-import { useNoticeEnv } from "../hooks/chrome";
+import { useNoticeEnv, useNoticeRmEnv } from "../hooks/chrome";
 import { uuid, typeIs } from "@alrale/common-lib";
 
 const __ENV_DATA_KEY__ = "__ENV_DATA_KEY__"
@@ -127,6 +127,9 @@ export const useData = defineStore('data', () => {
 
     // delete table row
     const deleteRow = (index) => {
+        const current = tableData.value[index]
+        const envs = packagingEnv(current.dynamicEnvs)
+        useNoticeRmEnv(current.globalKey, envs)
         tableData.value.splice(index, 1)
     }
 

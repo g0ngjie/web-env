@@ -7,3 +7,11 @@ export function useNoticeEnv(globalKey, envs, bool) {
         value: { globalKey, envs, bool }
     });
 }
+
+export function useNoticeRmEnv(globalKey, envs) {
+    chrome.runtime?.sendMessage({
+        type: "__remove_envs",
+        to: "background",
+        value: { globalKey, envs }
+    });
+}

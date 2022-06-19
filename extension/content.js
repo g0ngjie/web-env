@@ -57,4 +57,13 @@ chrome.runtime.onMessage.addListener((msg) => {
             value: msg.value
         });
     }
+    if (msg.type === "__remove_envs" && msg.to === "content") {
+        // 同步数据
+        mergeEnvStore({ ...msg.value, bool: false })
+        postMessage({
+            type: "__remove_envs",
+            to: "document",
+            value: msg.value
+        })
+    }
 });
