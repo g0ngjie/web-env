@@ -15,6 +15,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'web-env/page',
+    chunkSizeWarningLimit: 1 << 10,
   },
   plugins: [
     vue(),
