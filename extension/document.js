@@ -1,35 +1,41 @@
+// 只有这里才可以设置环境变量
 const targetWindow = window
 
 const merge = Object.assign
 const isObject = (target) => Object.prototype.toString.call(target) === '[object Object]'
 
 // dynamic set window env
-const setDynamicEnv = (index = 0, arr = [], envs, target = targetWindow) => {
-    const key = arr[index]
-    if (index < arr.length - 1) {
-        if (target[key] === undefined) {
+const setDynamicEnv = (index = 0, keys = [], envs, target, isRemove) => {
+    const key = keys[index]
+    // globalKey env.a.b.c...
+    if (index < keys.length - 1) {
+        if (target[key] === undefined && !isRemove) {
             target[key] = {}
         }
-        setDynamicEnv(index + 1, arr, envs, target[key])
+        setDynamicEnv(index + 1, keys, envs, target[key], isRemove)
     } else {
-        if (target[key] === undefined) {
+        if (target[key] === undefined && !isRemove) {
             target[key] = envs
         } else {
-            if (isObject(envs))
-                target[key] = merge(target[key], envs)
-            else target[key] = envs
+            if (isRemove) {
+                delete target[key]
+                return
+            }
+            // envs => { a: 1, b: 2}
+            if (isObject(envs)) target[key] = merge(target[key], envs)
+            else target[key] = envs // envs => any assignable value
         }
     }
 }
 
 // set window env
-const setWindowEnv = (globalKey, envs = {}) => {
+const setWindowEnv = (globalKey, envs = {}, isRemove) => {
     if (globalKey) {
-        const arr = globalKey.split('.')
-        setDynamicEnv(0, arr, envs, targetWindow)
+        const keys = globalKey.split('.')
+        setDynamicEnv(0, keys, envs, targetWindow, isRemove)
     } else {
         Object.keys(envs).forEach(key => {
-            setDynamicEnv(0, [key], envs[key], targetWindow)
+            setDynamicEnv(0, [key], envs[key], targetWindow, isRemove)
         })
     }
 }
@@ -39,8 +45,9 @@ window.addEventListener(
     (event) => {
         const data = event.data;
         if (data.type === "__set_envs" && data.to === "document") {
-            console.log("[debug]document: data:", data)
-            setWindowEnv(data.value.globalKey, data.value.envs)
+            console.log("[debug]document: data:", data.value)
+            const { globalKey, envs, bool } = data.value
+            setWindowEnv(globalKey, envs, !bool)
         }
     },
     false
