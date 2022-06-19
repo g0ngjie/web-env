@@ -36,9 +36,9 @@ export default defineComponent({
           />
         ),
       },
-      { title: "title", minWidth: "200", key: "title" },
-      { title: "globalKey", minWidth: "120", key: "globalKey" },
-      { title: "description", minWidth: "200", key: "description" },
+      { title: "title", minWidth: "100", key: "title" },
+      { title: "globalKey", minWidth: "100", key: "globalKey" },
+      { title: "description", minWidth: "150", key: "description" },
       {
         title: "options",
         width: "120",
