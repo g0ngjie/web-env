@@ -1,12 +1,10 @@
-const merge = Object.assign
 const targetWindow = window
 
-function isObject(obj) {
-    return Object.prototype.toString.call(obj) === '[object Object]'
-}
+const merge = Object.assign
+const isObject = (target) => Object.prototype.toString.call(target) === '[object Object]'
 
 // dynamic set window env
-const setDynamicEnv = (index = 0, arr = [], envs, target = window) => {
+const setDynamicEnv = (index = 0, arr = [], envs, target = targetWindow) => {
     const key = arr[index]
     if (index < arr.length - 1) {
         if (target[key] === undefined) {

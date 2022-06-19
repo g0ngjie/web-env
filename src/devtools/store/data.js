@@ -2,13 +2,10 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import { EnvFieldType } from "../common/enum";
-import { notice } from "./chrome";
-import { isObject } from "@alrale/common-lib";
-import { tableData as list } from "./mock";
+import { useNotice } from "../hooks/chrome";
 
 export const useData = defineStore('data', () => {
-    // TODO: mock data
-    const tableData = ref(list)
+    const tableData = ref([])
     // form data
     const form = ref({ title: '', description: '', globalKey: '', dynamicEnvs: [{ key: '', type: EnvFieldType.String, value: '' }] })
     // form env waring msg
@@ -56,40 +53,6 @@ export const useData = defineStore('data', () => {
         return target
     }
 
-    const merge = Object.assign
-
-    // dynamic set window env
-    const setDynamicEnv = (index = 0, arr = [], envs, target = window) => {
-        const key = arr[index]
-        if (index < arr.length - 1) {
-            if (target[key] === undefined) {
-                target[key] = {}
-            }
-            setDynamicEnv(index + 1, arr, envs, target[key])
-        } else {
-            if (target[key] === undefined) {
-                target[key] = envs
-            } else {
-                if (isObject(envs))
-                    target[key] = merge(target[key], envs)
-                else target[key] = envs
-            }
-        }
-    }
-
-    // set window env
-    // TODO: test window[globalKey]
-    const setWindowEnv = (globalKey, envs = {}) => {
-        if (globalKey) {
-            const arr = globalKey.split('.')
-            setDynamicEnv(0, arr, envs, window)
-        } else {
-            Object.keys(envs).forEach(key => {
-                setDynamicEnv(0, [key], envs[key], window)
-            })
-        }
-    }
-
     // form submit
     const submit = () => {
         const { title, description, globalKey, dynamicEnvs } = form.value
@@ -101,10 +64,8 @@ export const useData = defineStore('data', () => {
             dynamicEnvs,
             env: JSON.stringify(envs),
         })
-        // setWindowEnv(globalKey, envs)
-
+        useNotice(globalKey, envs)
         formReset()
-        notice(globalKey, envs)
     }
 
     // form reset

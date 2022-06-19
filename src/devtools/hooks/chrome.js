@@ -1,6 +1,6 @@
 
 
-export function notice(globalKey, envs) {
+export function useNotice(globalKey, envs) {
     chrome.runtime.sendMessage({
         type: "__set_envs",
         to: "background",
