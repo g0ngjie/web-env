@@ -146,6 +146,15 @@ export const useData = defineStore('data', () => {
         useNoticeEnv(current.globalKey, envs, bool)
     }
 
+    // clean all env
+    const cleanAllEnv = () => {
+        tableData.value.forEach(item => {
+            item.switchOn = false
+            const envs = packagingEnv(item.dynamicEnvs)
+            useNoticeRmEnv(item.globalKey, envs)
+        })
+    }
+
     return {
         tableData,
         form,
@@ -158,5 +167,6 @@ export const useData = defineStore('data', () => {
         deleteRow,
         editRow,
         editSwitch,
+        cleanAllEnv,
     }
 })

@@ -1,13 +1,6 @@
-import { defineComponent, computed } from "vue";
-import {
-  NDataTable,
-  NButton,
-  createDiscreteApi,
-  NSwitch,
-  NSpace,
-} from "naive-ui";
+import { defineComponent } from "vue";
+import { NDataTable, NButton, NSwitch, NSpace } from "naive-ui";
 import { useData } from "./store/data";
-import { useTheme } from "./store/theme";
 
 export default defineComponent({
   props: {
@@ -17,12 +10,6 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const message = computed(() => {
-      const discrete = createDiscreteApi(["message"], {
-        configProviderProps: { theme: useTheme().theme },
-      });
-      return discrete.message;
-    });
     const createColumns = ({ delFn, editFn, switchFn }) => [
       {
         title: "switch",

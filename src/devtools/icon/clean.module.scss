@@ -1,0 +1,7 @@
+.icon {
+  cursor: pointer;
+  color: #7d828b;
+  &:active {
+    transform: scale(0.9);
+  }
+}

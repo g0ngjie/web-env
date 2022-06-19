@@ -2,6 +2,7 @@ import { defineComponent, ref } from "vue";
 import { NSpace, NButton, NConfigProvider } from "naive-ui";
 import Table from "./table";
 import ThemeIcon from "./icon/index";
+import CleanIcon from "./icon/clean";
 import { useTheme } from "./store/theme";
 import Setting from "./setting";
 import styl from "./index.module.scss";
@@ -29,7 +30,10 @@ export default defineComponent({
               >
                 create
               </NButton>
-              <ThemeIcon />
+              <div class={styl.icons}>
+                <CleanIcon />
+                <ThemeIcon />
+              </div>
             </NSpace>
             <Table openModal={() => openModal(true)} />
             <Setting
