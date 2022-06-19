@@ -4,11 +4,6 @@ console.log("[debug]background ready:")
 chrome.runtime.onMessage.addListener((msg) => {
     if (msg.type === "__set_envs" && msg.to === "background") {
         console.log("[debug]接收background-msg:", msg)
-        // webEnvPort.postMessage({
-        //     type: "__set_envs",
-        //     to: "content",
-        //     value: msg.value,
-        // });
 
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             chrome.tabs.sendMessage(tabs[0].id, {

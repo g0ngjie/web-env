@@ -10,15 +10,15 @@ const __ENV_DATA_KEY__ = window.location.host
 
 script.addEventListener("load", () => {
     // 初始化发送给document的消息
-    chrome.storage.local.get([__ENV_DATA_KEY__], (res) => {
-        if (res[__ENV_DATA_KEY__]) {
-            window.postMessage({
-                type: "__init_envs",
-                to: "document",
-                value: res[__ENV_DATA_KEY__],
-            });
-        }
-    })
+    // chrome.storage.local.get([__ENV_DATA_KEY__], (res) => {
+    //     if (res[__ENV_DATA_KEY__]) {
+    //         window.postMessage({
+    //             type: "__init_envs",
+    //             to: "document",
+    //             value: res[__ENV_DATA_KEY__],
+    //         });
+    //     }
+    // })
 });
 
 function setStore(k, v) {
@@ -32,11 +32,14 @@ function syncEnv(env) {
 
 // 接收background.js传来的信息，转发给document
 chrome.runtime.onMessage.addListener((msg) => {
-    console.log('content1获取vue传来的msg', msg)
-    syncEnv(msg.value);
-    postMessage({
-        type: "__set_envs",
-        to: "document",
-        value: msg.value
-    });
+    console.log('content获取通过background传来的vue的msg', msg)
+    // syncEnv(msg.value);
+
+    if (msg.type === "__set_envs" && msg.to === "content") {
+        postMessage({
+            type: "__set_envs",
+            to: "document",
+            value: msg.value
+        });
+    }
 });

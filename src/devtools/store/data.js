@@ -2,7 +2,7 @@
 import { ref, watch, onBeforeMount } from "vue";
 import { defineStore } from "pinia";
 import { EnvFieldType } from "../common/enum";
-import { useNotice } from "../hooks/chrome";
+import { useNoticeEnv } from "../hooks/chrome";
 import { uuid, typeIs } from "@alrale/common-lib";
 
 const __ENV_DATA_KEY__ = "__ENV_DATA_KEY__"
@@ -75,10 +75,9 @@ export const useData = defineStore('data', () => {
         return bool
     }
     // packaging environment variables
-    const packagingEnv = () => {
-        const { dynamicEnvs } = form.value
+    const packagingEnv = (envs) => {
         let target
-        dynamicEnvs.forEach(item => {
+        envs.forEach(item => {
             const { type, key, value } = item
             switch (type) {
                 case EnvFieldType.String:
@@ -98,7 +97,6 @@ export const useData = defineStore('data', () => {
     // form submit
     const submit = (isEdit) => {
         const { title, description, globalKey, dynamicEnvs } = form.value
-        const envs = packagingEnv()
         if (isEdit) {
             const index = tableData.value.findIndex(item => item.id === form.value.id)
             tableData.value[index] = form.value
@@ -112,7 +110,6 @@ export const useData = defineStore('data', () => {
                 dynamicEnvs,
             })
         }
-        useNotice(globalKey, envs)
         formReset()
     }
 
@@ -139,6 +136,9 @@ export const useData = defineStore('data', () => {
         // 同步数据
         syncEnv(tableData.value)
         tableData.value[index].switchOn = bool
+        const current = tableData.value[index]
+        const envs = packagingEnv(current.dynamicEnvs)
+        useNoticeEnv(current.globalKey, envs, bool)
     }
 
     return {
