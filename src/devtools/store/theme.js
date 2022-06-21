@@ -15,11 +15,11 @@ export const useTheme = defineStore('theme', () => {
     const isDark = ref(false)
 
     // 同步主题
-    const syncTheme = (theme) => chrome.storage?.local.set({ [__ENV_THEME_KEY__]: theme })
+    const syncTheme = (theme) => chrome.storage?.sync.set({ [__ENV_THEME_KEY__]: theme })
 
     // 初始化加载
     onBeforeMount(() => {
-        chrome.storage?.local.get([__ENV_THEME_KEY__], (res) => {
+        chrome.storage?.sync.get([__ENV_THEME_KEY__], (res) => {
             if (res[__ENV_THEME_KEY__] === Theme.Dark) {
                 isDark.value = true
                 setBg('rgba(24, 24, 28, .9)')

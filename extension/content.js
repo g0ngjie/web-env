@@ -23,12 +23,12 @@ script.addEventListener("load", async () => {
 });
 
 function setStore(k, v) {
-    chrome.storage.local.set({ [k]: v });
+    chrome.storage.sync.set({ [k]: v });
 }
 
 function getEnvStore() {
     return new Promise((resolve) => {
-        chrome.storage.local.get([__ENV_CONTENT_KEY__], (res) => {
+        chrome.storage.sync.get([__ENV_CONTENT_KEY__], (res) => {
             resolve(res[__ENV_CONTENT_KEY__] || {});
         })
     })

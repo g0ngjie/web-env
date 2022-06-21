@@ -27,13 +27,13 @@ function deepRefToList(ref) {
 // 同步数据
 function syncEnv(list) {
     const data = deepRefToList(list)
-    chrome.storage?.local.set({ [__ENV_DATA_KEY__]: data })
+    chrome.storage?.sync.set({ [__ENV_DATA_KEY__]: data })
 }
 
 // 同步共享数据
 function syncEnvShare(list) {
     const data = deepRefToList(list)
-    chrome.storage?.local.set({ [__ENV_SYNC_DATA__]: data })
+    chrome.storage?.sync.set({ [__ENV_SYNC_DATA__]: data })
 }
 
 export const useData = defineStore('data', () => {
@@ -45,7 +45,7 @@ export const useData = defineStore('data', () => {
     onBeforeMount(async () => {
         const getHost = await usePageHost()
         __ENV_DATA_KEY__ = `__ENV_DATA_KEY__${getHost}`
-        chrome.storage?.local.get([__ENV_DATA_KEY__, __ENV_SYNC_DATA__], (res) => {
+        chrome.storage?.sync.get([__ENV_DATA_KEY__, __ENV_SYNC_DATA__], (res) => {
             if (res[__ENV_DATA_KEY__] && typeIs(res[__ENV_DATA_KEY__]) === 'array') {
                 tableData.value = res[__ENV_DATA_KEY__]
             }
