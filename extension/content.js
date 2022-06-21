@@ -6,7 +6,10 @@ script.setAttribute("type", "text/javascript");
 script.setAttribute("src", chrome.runtime.getURL("document.js"));
 document.documentElement.appendChild(script);
 
-const __ENV_CONTENT_KEY__ = '__ENV_CONTENT_KEY__'
+// content devtools 使用缓存KEY
+const __ENV_HOST_KEY__ = window.location.host
+// 环境变量KEY
+const __ENV_CONTENT_KEY__ = `__ENV_CONTENT_KEY__${__ENV_HOST_KEY__}`
 
 script.addEventListener("load", async () => {
     // 初始化环境变量

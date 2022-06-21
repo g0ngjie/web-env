@@ -15,3 +15,14 @@ export function useNoticeRmEnv(globalKey, envs) {
         value: { globalKey, envs }
     });
 }
+
+// 获取当前用户页面HOST
+export function usePageHost() {
+    return new Promise(resolve => {
+        if (chrome.devtools) {
+            chrome.devtools.inspectedWindow.eval('window.location.host', (host) => {
+                resolve(host);
+            });
+        } else resolve('');
+    })
+}

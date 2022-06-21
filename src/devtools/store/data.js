@@ -2,10 +2,10 @@
 import { ref, watch, onBeforeMount } from "vue";
 import { defineStore } from "pinia";
 import { EnvFieldType } from "../common/enum";
-import { useNoticeEnv, useNoticeRmEnv } from "../hooks/chrome";
+import { useNoticeEnv, useNoticeRmEnv, usePageHost } from "../hooks/chrome";
 import { uuid, typeIs } from "@alrale/common-lib";
 
-const __ENV_DATA_KEY__ = "__ENV_DATA_KEY__"
+let __ENV_DATA_KEY__ = "__ENV_DATA_KEY__"
 
 // ref 对象转换成数组
 function deepRefToList(ref) {
@@ -33,7 +33,9 @@ export const useData = defineStore('data', () => {
     const tableData = ref([])
 
     // 初始化加载
-    onBeforeMount(() => {
+    onBeforeMount(async () => {
+        const getHost = await usePageHost()
+        __ENV_DATA_KEY__ = `__ENV_DATA_KEY__${getHost}`
         chrome.storage?.local.get([__ENV_DATA_KEY__], (res) => {
             if (res[__ENV_DATA_KEY__] && typeIs(res[__ENV_DATA_KEY__]) === 'array') {
                 tableData.value = res[__ENV_DATA_KEY__]

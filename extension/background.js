@@ -11,7 +11,16 @@ function noticeContent(type, value) {
     });
 }
 
-// 接收document传来的信息，转发给content
+function noticeDevtools(type, value) {
+    const typeFor = { hostKey: 'todo...' }
+    chrome.runtime.sendMessage({
+        type: typeFor[type],
+        to: "devtools",
+        value
+    });
+}
+
+// 接收传来的信息
 chrome.runtime.onMessage.addListener((msg) => {
     if (msg.type === "__set_envs" && msg.to === "background") {
         console.log("[debug]接收__set_envs background-msg:", msg)
