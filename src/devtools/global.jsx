@@ -34,7 +34,7 @@ export default defineComponent({
                   <NDescriptionsItem label="type">
                     {item.type}
                   </NDescriptionsItem>
-                  <NDescriptionsItem label={item.value}>
+                  <NDescriptionsItem label="value">
                     {item.value}
                   </NDescriptionsItem>
                 </>
