@@ -5,12 +5,14 @@ import ThemeIcon from "./icon/index";
 import CleanIcon from "./icon/clean";
 import { useTheme } from "./store/theme";
 import Setting from "./setting";
+import GlobalData from "./global";
 import styl from "./index.module.scss";
 
 export default defineComponent({
   setup() {
     const store = useTheme();
     const showSetting = ref(false);
+    const showGlobal = ref(false);
     const isEdit = ref(false);
     const openModal = (bool) => {
       showSetting.value = true;
@@ -21,15 +23,29 @@ export default defineComponent({
       return (
         <NConfigProvider theme={store.theme}>
           <div class={styl.container}>
-            <NSpace justify="space-between" style={{ marginBottom: "10px" }}>
-              <NButton
-                size="tiny"
-                type="primary"
-                ghost
-                onClick={() => openModal(false)}
-              >
-                create
-              </NButton>
+            <NSpace
+              justify="space-between"
+              style={{ marginBottom: "10px" }}
+              wrap={false}
+            >
+              <div class={styl.btns}>
+                <NButton
+                  size="tiny"
+                  type="primary"
+                  ghost
+                  onClick={() => openModal(false)}
+                >
+                  create
+                </NButton>
+                <NButton
+                  size="tiny"
+                  type="primary"
+                  ghost
+                  onClick={() => (showGlobal.value = true)}
+                >
+                  global
+                </NButton>
+              </div>
               <div class={styl.icons}>
                 <CleanIcon />
                 <ThemeIcon />
@@ -41,6 +57,7 @@ export default defineComponent({
               isEdit={isEdit}
               onClose={() => (showSetting.value = false)}
             />
+            <GlobalData visible={showGlobal} />
           </div>
         </NConfigProvider>
       );

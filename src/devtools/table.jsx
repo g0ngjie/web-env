@@ -23,9 +23,30 @@ export default defineComponent({
           />
         ),
       },
-      { title: "title", minWidth: "100", key: "title" },
-      { title: "globalKey", minWidth: "100", key: "globalKey" },
-      { title: "description", minWidth: "150", key: "description" },
+      {
+        title: "title",
+        minWidth: "100",
+        key: "title",
+        ellipsis: {
+          tooltip: true,
+        },
+      },
+      {
+        title: "globalKey",
+        minWidth: "100",
+        key: "globalKey",
+        ellipsis: {
+          tooltip: true,
+        },
+      },
+      {
+        title: "description",
+        minWidth: "150",
+        key: "description",
+        ellipsis: {
+          tooltip: true,
+        },
+      },
       {
         title: "options",
         width: "120",
