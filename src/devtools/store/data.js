@@ -1,11 +1,12 @@
 
 import { ref, watch, onBeforeMount } from "vue";
 import { defineStore } from "pinia";
-import { EnvFieldType } from "../common/enum";
+import { EnvFieldType, SyncType } from "../common/enum";
 import { useNoticeEnv, useNoticeRmEnv, usePageHost } from "../hooks/chrome";
 import { uuid, typeIs } from "@alrale/common-lib";
 
 let __ENV_DATA_KEY__ = "__ENV_DATA_KEY__"
+const __ENV_SYNC_DATA__ = "__ENV_SYNC_DATA__"
 
 // ref 对象转换成数组
 function deepRefToList(ref) {
@@ -29,16 +30,27 @@ function syncEnv(list) {
     chrome.storage?.local.set({ [__ENV_DATA_KEY__]: data })
 }
 
+// 同步共享数据
+function syncEnvShare(list) {
+    const data = deepRefToList(list)
+    chrome.storage?.local.set({ [__ENV_SYNC_DATA__]: data })
+}
+
 export const useData = defineStore('data', () => {
     const tableData = ref([])
+    // 共享环境数据
+    const syncTableData = ref([])
 
     // 初始化加载
     onBeforeMount(async () => {
         const getHost = await usePageHost()
         __ENV_DATA_KEY__ = `__ENV_DATA_KEY__${getHost}`
-        chrome.storage?.local.get([__ENV_DATA_KEY__], (res) => {
+        chrome.storage?.local.get([__ENV_DATA_KEY__, __ENV_SYNC_DATA__], (res) => {
             if (res[__ENV_DATA_KEY__] && typeIs(res[__ENV_DATA_KEY__]) === 'array') {
                 tableData.value = res[__ENV_DATA_KEY__]
+            }
+            if (res[__ENV_SYNC_DATA__] && typeIs(res[__ENV_SYNC_DATA__]) === 'array') {
+                syncTableData.value = res[__ENV_SYNC_DATA__]
             }
         })
     })
@@ -54,6 +66,7 @@ export const useData = defineStore('data', () => {
 
     // 同步数据
     watch(() => [...tableData.value], () => syncEnv(tableData.value))
+    watch(() => [...syncTableData.value], () => syncEnvShare(syncTableData.value))
 
     const addEnv = () => {
         const bool = validateEnv()
@@ -160,8 +173,42 @@ export const useData = defineStore('data', () => {
         syncEnv(tableData.value)
     }
 
+    // 同步数据到共享环境
+    const syncRow = (row) => {
+        // 数据克隆
+        const data = JSON.parse(JSON.stringify(row))
+        data.switchOn = false
+        // 判断是否存在
+        const index = syncTableData.value.findIndex(item => item.id === data.id)
+        // 如果存在则替换
+        if (index > -1) {
+            syncTableData.value[index] = data
+            return SyncType.Update
+        } else {
+            syncTableData.value.push(data)
+            return SyncType.Insert
+        }
+    }
+
+    // 共享环境数据使用
+    const useShareRow = (row) => {
+        // 数据克隆
+        const data = JSON.parse(JSON.stringify(row))
+        // 判断是否存在
+        const index = tableData.value.findIndex(item => item.id === data.id)
+        // 如果存在则替换
+        if (index > -1) {
+            tableData.value[index] = data
+            return SyncType.Update
+        } else {
+            tableData.value.push(data)
+            return SyncType.Insert
+        }
+    }
+
     return {
         tableData,
+        syncTableData,
         form,
         addEnv,
         removeEnv,
@@ -173,5 +220,7 @@ export const useData = defineStore('data', () => {
         editRow,
         editSwitch,
         cleanAllEnv,
+        syncRow,
+        useShareRow,
     }
 })

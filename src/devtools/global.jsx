@@ -1,4 +1,4 @@
-import { defineComponent, ref } from "vue";
+import { defineComponent, computed } from "vue";
 import {
   NDrawer,
   NDrawerContent,
@@ -6,8 +6,11 @@ import {
   NDataTable,
   NDescriptions,
   NDescriptionsItem,
+  createDiscreteApi,
 } from "naive-ui";
 import { useData } from "./store/data";
+import { useTheme } from "./store/theme";
+import { SyncType } from "./common/enum";
 
 export default defineComponent({
   props: {
@@ -87,8 +90,24 @@ export default defineComponent({
       },
     ];
 
+    const message = computed(() => {
+      const discrete = createDiscreteApi(["message"], {
+        configProviderProps: { theme: useTheme().theme },
+      });
+      return discrete.message;
+    });
+
     const useCurrent = (row) => {
-      console.log(row, "row");
+      const type = store.useShareRow(row);
+      switch (type) {
+        case SyncType.Insert:
+          message.value.success(`use ${row.title} success`);
+          break;
+        case SyncType.Update:
+          message.value.success(`local data ${row.title} to change`);
+          break;
+      }
+      props.visible.value = false;
     };
 
     return () => {
@@ -110,7 +129,7 @@ export default defineComponent({
                 useFn: (row) => useCurrent(row),
               })}
               rowKey={(row) => row.id}
-              data={store.tableData}
+              data={store.syncTableData}
             />
           </NDrawerContent>
         </NDrawer>

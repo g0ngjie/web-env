@@ -1,6 +1,14 @@
-import { defineComponent } from "vue";
-import { NDataTable, NButton, NSwitch, NSpace } from "naive-ui";
+import { defineComponent, computed } from "vue";
+import {
+  NDataTable,
+  NButton,
+  NSwitch,
+  NSpace,
+  createDiscreteApi,
+} from "naive-ui";
 import { useData } from "./store/data";
+import { useTheme } from "./store/theme";
+import { SyncType } from "./common/enum";
 
 export default defineComponent({
   props: {
@@ -10,7 +18,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const createColumns = ({ delFn, editFn, switchFn }) => [
+    const createColumns = ({ delFn, editFn, switchFn, syncFn }) => [
       {
         title: "switch",
         width: "70",
@@ -49,12 +57,20 @@ export default defineComponent({
       },
       {
         title: "options",
-        width: "120",
+        width: "160",
         fixed: "right",
-        render(_, index) {
+        render(row, index) {
           return (
             <>
               <NSpace>
+                <NButton
+                  ghost
+                  size="tiny"
+                  type="primary"
+                  onClick={() => syncFn(row)}
+                >
+                  sync
+                </NButton>
                 <NButton
                   ghost
                   size="tiny"
@@ -80,6 +96,25 @@ export default defineComponent({
 
     const store = useData();
 
+    const message = computed(() => {
+      const discrete = createDiscreteApi(["message"], {
+        configProviderProps: { theme: useTheme().theme },
+      });
+      return discrete.message;
+    });
+
+    const handleSyncShare = (row) => {
+      const type = store.syncRow(row);
+      switch (type) {
+        case SyncType.Insert:
+          message.value.success(`${row.title} to sync successfully`);
+          break;
+        case SyncType.Update:
+          message.value.success(`${row.title} to change successfully`);
+          break;
+      }
+    };
+
     return () => {
       return (
         <NDataTable
@@ -95,6 +130,7 @@ export default defineComponent({
               store.editRow(index);
               props.openModal();
             },
+            syncFn: (row) => handleSyncShare(row),
           })}
           data={store.tableData}
         />

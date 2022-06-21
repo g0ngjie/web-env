@@ -9,3 +9,8 @@ export const EnvFieldType = {
     Number: "number",
     Boolean: "boolean",
 }
+
+export const SyncType = {
+    Update: "update",
+    Insert: "insert",
+}
