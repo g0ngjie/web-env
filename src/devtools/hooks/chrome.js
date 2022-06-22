@@ -26,3 +26,19 @@ export function usePageHost() {
         } else resolve('');
     })
 }
+
+// 主题
+const __ENV_THEME_KEY__ = '__ENV_THEME_KEY__'
+// 获取主题
+export function useEnvTheme() {
+    return new Promise(resolve => {
+        chrome.storage?.sync.get([__ENV_THEME_KEY__], (res) => {
+            resolve(res[__ENV_THEME_KEY__])
+        })
+    })
+}
+
+// 同步主题
+export function useSyncEnvTheme(theme) {
+    chrome.storage?.sync.set({ [__ENV_THEME_KEY__]: theme })
+}
