@@ -2,26 +2,34 @@
 import { ref, watch, onBeforeMount } from "vue";
 import { defineStore } from "pinia";
 import { EnvFieldType, SyncType } from "../common/enum";
-import { useNoticeEnv, useNoticeRmEnv, usePageHost } from "../hooks/chrome";
-import { uuid, typeIs } from "@alrale/common-lib";
-import { deepOClone } from "@alrale/common-lib";
+import {
+    useNoticeEnv,
+    useNoticeRmEnv,
+    usePageHost,
+    useChromeLocalEnv,
+    useChromeShareEnv,
+    useChromeSyncLocalEnv,
+    useChromeSyncShareEnv,
+} from "../hooks/chrome";
+import { uuid, deepOClone } from "@alrale/common-lib";
 
+// 本地数据
 let __ENV_DATA_KEY__ = "__ENV_DATA_KEY__"
-const __ENV_SYNC_DATA__ = "__ENV_SYNC_DATA__"
 
-// 同步数据
+// 同步本地数据
 function syncEnv(list) {
+    // Proxy -> object
     const data = deepOClone(list)
-    chrome.storage?.local.set({ [__ENV_DATA_KEY__]: data })
+    useChromeSyncLocalEnv(__ENV_DATA_KEY__, data)
 }
-
 // 同步共享数据
 function syncEnvShare(list) {
     const data = deepOClone(list)
-    chrome.storage?.sync.set({ [__ENV_SYNC_DATA__]: data })
+    useChromeSyncShareEnv(data)
 }
 
 export const useData = defineStore('data', () => {
+    // 本地环境数据
     const tableData = ref([])
     // 共享环境数据
     const syncTableData = ref([])
@@ -30,16 +38,8 @@ export const useData = defineStore('data', () => {
     onBeforeMount(async () => {
         const getHost = await usePageHost()
         __ENV_DATA_KEY__ = `__ENV_DATA_KEY__${getHost}`
-        chrome.storage?.local.get([__ENV_DATA_KEY__], (res) => {
-            if (res[__ENV_DATA_KEY__] && typeIs(res[__ENV_DATA_KEY__]) === 'array') {
-                tableData.value = res[__ENV_DATA_KEY__]
-            }
-        })
-        chrome.storage?.sync.get([__ENV_SYNC_DATA__], (res) => {
-            if (res[__ENV_SYNC_DATA__] && typeIs(res[__ENV_SYNC_DATA__]) === 'array') {
-                syncTableData.value = res[__ENV_SYNC_DATA__]
-            }
-        })
+        tableData.value = await useChromeLocalEnv(__ENV_DATA_KEY__)
+        syncTableData.value = await useChromeShareEnv()
     })
 
     // form data
