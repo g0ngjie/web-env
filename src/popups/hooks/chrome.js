@@ -1,0 +1,41 @@
+import { typeIs } from "@alrale/common-lib";
+
+// 获取当前标签页
+export function useCurrentTab() {
+    return new Promise(resolve => {
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            const url = tabs[0].url;
+            const title = tabs[0].title;
+            const highlighted = tabs[0].highlighted;
+            resolve({
+                tab: tabs[0],
+                url, title, highlighted
+            })
+        })
+    })
+}
+
+/**
+ * 截取完整字符串中的host
+ * @param {String} url 地址
+ * @returns {String} host
+ */
+export const useGetHost = (url) => {
+    url = url.match(/https?:\/\/([^/]+)\//i);
+    let domain = '';
+    if (url && url[1]) {
+        domain = url[1];
+    }
+    return domain;
+};
+
+// 本地数据列表获取
+export function useChromeLocalEnv(key) {
+    return new Promise(resolve => {
+        chrome.storage.local.get([key], (res) => {
+            if (res[key] && typeIs(res[key]) === 'array') {
+                resolve(res[key])
+            } else resolve([])
+        })
+    })
+}

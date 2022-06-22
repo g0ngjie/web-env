@@ -10,7 +10,8 @@
   user-select: none;
   background-color: var(--web-env-main-color);
   transition: 0.35s var(--cubic-bezier-ease-in-out);
-  height: 100%;
-  width: 100%;
-  overflow-y: scroll;
+  min-width: 180px;
+  min-height: 260px;
+  border-radius: 5px;
+  padding: 10px;
 }
