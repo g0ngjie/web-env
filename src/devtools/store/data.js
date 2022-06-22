@@ -4,35 +4,20 @@ import { defineStore } from "pinia";
 import { EnvFieldType, SyncType } from "../common/enum";
 import { useNoticeEnv, useNoticeRmEnv, usePageHost } from "../hooks/chrome";
 import { uuid, typeIs } from "@alrale/common-lib";
+import { deepOClone } from "@alrale/common-lib";
 
 let __ENV_DATA_KEY__ = "__ENV_DATA_KEY__"
 const __ENV_SYNC_DATA__ = "__ENV_SYNC_DATA__"
 
-// ref 对象转换成数组
-function deepRefToList(ref) {
-    return ref.map(env => {
-        const target = {}
-        Object.keys(env).map(key => {
-            if (typeIs(env[key]) !== 'array') {
-                target[key] = env[key]
-            } else {
-                const envs = deepRefToList(env[key])
-                target[key] = envs
-            }
-        })
-        return target
-    })
-}
-
 // 同步数据
 function syncEnv(list) {
-    const data = deepRefToList(list)
+    const data = deepOClone(list)
     chrome.storage?.local.set({ [__ENV_DATA_KEY__]: data })
 }
 
 // 同步共享数据
 function syncEnvShare(list) {
-    const data = deepRefToList(list)
+    const data = deepOClone(list)
     chrome.storage?.sync.set({ [__ENV_SYNC_DATA__]: data })
 }
 
@@ -151,7 +136,10 @@ export const useData = defineStore('data', () => {
     }
 
     // edit table row
-    const editRow = (index) => form.value = tableData.value[index]
+    const editRow = (index) => {
+        const target = tableData.value[index]
+        form.value = deepOClone(target)
+    }
 
     // edit switch
     const editSwitch = (index, bool) => {
@@ -178,7 +166,7 @@ export const useData = defineStore('data', () => {
     // 同步数据到共享环境
     const syncRow = (row) => {
         // 数据克隆
-        const data = JSON.parse(JSON.stringify(row))
+        const data = deepOClone(row)
         data.switchOn = false
         // 判断是否存在
         const index = syncTableData.value.findIndex(item => item.id === data.id)
