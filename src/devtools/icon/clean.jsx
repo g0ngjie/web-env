@@ -1,7 +1,7 @@
 import { defineComponent, computed } from "vue";
 import { NIcon, createDiscreteApi } from "naive-ui";
-import { useData } from "../store/data";
-import { useTheme } from "../store/theme";
+import { useData } from "@devtools/store/data";
+import { useTheme } from "@devtools/store/theme";
 import styl from "./clean.module.scss";
 
 export default defineComponent({

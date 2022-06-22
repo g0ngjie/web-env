@@ -11,11 +11,24 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      '@devtools': path.resolve(__dirname, 'src/devtools'),
+      '@popups': path.resolve(__dirname, 'src/popups')
     },
   },
   build: {
     outDir: 'web-env/page',
     chunkSizeWarningLimit: 1 << 10,
+    rollupOptions: {
+      input: {
+        devtools: path.resolve(__dirname, 'index.html'),
+        popups: path.resolve(__dirname, 'popups.html')
+      },
+      output: {
+        chunkFileNames: 'static/js/[name]-[hash].js',
+        entryFileNames: 'static/js/[name]-[hash].js',
+        assetFileNames: 'static/[ext]/name-[hash].[ext]'
+      }
+    }
   },
   plugins: [
     vue(),

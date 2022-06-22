@@ -11,23 +11,19 @@ import {
   NSpace,
   NAlert,
 } from "naive-ui";
-import { EnvFieldType as Type } from "./common/enum";
-import { useData } from "./store/data";
+import { EnvFieldType as Type } from "@devtools/common/enum";
+import { useData } from "@devtools/store/data";
 import { isNumber } from "@alrale/common-lib";
 
 export default defineComponent({
   props: {
     visible: {
-      type: Boolean,
+      type: Object,
       default: false,
     },
     isEdit: {
       type: Boolean,
       default: false,
-    },
-    onClose: {
-      type: Function,
-      default: () => {},
     },
   },
   setup(props) {
@@ -53,8 +49,8 @@ export default defineComponent({
       formRef.value?.validate((errors) => {
         store.validateEnv();
         if (!errors) {
-          store.submit(props.isEdit.value);
-          props.onClose();
+          store.submit(props.isEdit);
+          props.visible.value = false;
         }
       });
     };
@@ -70,7 +66,7 @@ export default defineComponent({
           width="99%"
           placement="left"
           v-model:show={props.visible.value}
-          on-esc={props.onClose}
+          on-esc={() => (props.visible.value = false)}
           on-after-leave={onLeave}
         >
           <NDrawerContent title="setting" closable>

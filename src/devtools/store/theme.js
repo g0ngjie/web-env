@@ -2,8 +2,8 @@
 import { ref, onBeforeMount } from "vue";
 import { defineStore } from "pinia";
 import { darkTheme, lightTheme } from "naive-ui";
-import { Theme } from "../common/enum";
-import { useEnvTheme, useSyncEnvTheme } from "../hooks/chrome";
+import { Theme } from "@devtools/common/enum";
+import { useEnvTheme, useSyncEnvTheme } from "@devtools/hooks/chrome";
 
 function setBg(color) {
     document.documentElement.style.setProperty('--web-env-main-color', color)

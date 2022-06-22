@@ -1,0 +1,16 @@
+:root {
+  --web-env-main-color: #ffffff;
+  --cubic-bezier-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.container {
+  // 取消用户选中
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  background-color: var(--web-env-main-color);
+  transition: 0.35s var(--cubic-bezier-ease-in-out);
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+}

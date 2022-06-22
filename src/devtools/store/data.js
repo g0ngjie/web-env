@@ -1,7 +1,7 @@
 
 import { ref, watch, onBeforeMount } from "vue";
 import { defineStore } from "pinia";
-import { EnvFieldType, SyncType } from "../common/enum";
+import { EnvFieldType, SyncType } from "@devtools/common/enum";
 import {
     useNoticeEnv,
     useNoticeRmEnv,
@@ -10,7 +10,7 @@ import {
     useChromeShareEnv,
     useChromeSyncLocalEnv,
     useChromeSyncShareEnv,
-} from "../hooks/chrome";
+} from "@devtools/hooks/chrome";
 import { uuid, deepOClone } from "@alrale/common-lib";
 
 // 本地数据

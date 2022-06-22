@@ -1,9 +1,9 @@
 import { defineComponent, ref } from "vue";
 import { NSpace, NButton, NConfigProvider } from "naive-ui";
 import Table from "./table";
-import ThemeIcon from "./icon/index";
-import CleanIcon from "./icon/clean";
-import { useTheme } from "./store/theme";
+import ThemeIcon from "@devtools/icon/index";
+import CleanIcon from "@devtools/icon/clean";
+import { useTheme } from "@devtools/store/theme";
 import Setting from "./setting";
 import GlobalData from "./global";
 import styl from "./index.module.scss";
@@ -52,11 +52,7 @@ export default defineComponent({
               </div>
             </NSpace>
             <Table openModal={() => openModal(true)} />
-            <Setting
-              visible={showSetting}
-              isEdit={isEdit}
-              onClose={() => (showSetting.value = false)}
-            />
+            <Setting visible={showSetting} isEdit={isEdit.value} />
             <GlobalData visible={showGlobal} />
           </div>
         </NConfigProvider>

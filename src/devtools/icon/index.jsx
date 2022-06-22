@@ -1,7 +1,7 @@
 import { defineComponent } from "vue";
 import { NIcon, NSwitch } from "naive-ui";
-import { useTheme } from "../store/theme";
-import { Theme } from "../common/enum";
+import { useTheme } from "@devtools/store/theme";
+import { Theme } from "@devtools/common/enum";
 import styl from "./index.module.scss";
 
 export default defineComponent({

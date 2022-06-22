@@ -9,14 +9,14 @@ import {
   createDiscreteApi,
   NSpace,
 } from "naive-ui";
-import { useData } from "./store/data";
-import { useTheme } from "./store/theme";
-import { SyncType } from "./common/enum";
+import { useData } from "@devtools/store/data";
+import { useTheme } from "@devtools/store/theme";
+import { SyncType } from "@devtools/common/enum";
 
 export default defineComponent({
   props: {
     visible: {
-      type: Boolean,
+      type: Object,
       default: false,
     },
   },

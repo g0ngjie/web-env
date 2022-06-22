@@ -32,7 +32,7 @@
   ],
   "action": {
     "default_title": "Web Env",
-    "default_popup": "popups/popup.html",
+    "default_popup": "page/popups.html",
     "default_icon": {
       "32": "icons/32.png",
       "48": "icons/48.png",
