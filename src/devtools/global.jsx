@@ -7,6 +7,7 @@ import {
   NDescriptions,
   NDescriptionsItem,
   createDiscreteApi,
+  NSpace,
 } from "naive-ui";
 import { useData } from "./store/data";
 import { useTheme } from "./store/theme";
@@ -22,7 +23,7 @@ export default defineComponent({
   setup(props) {
     const store = useData();
 
-    const createColumns = ({ useFn }) => [
+    const createColumns = ({ useFn, useRm }) => [
       {
         type: "expand",
         renderExpand: (row) => {
@@ -69,9 +70,9 @@ export default defineComponent({
       },
       {
         title: "options",
-        width: "70",
+        width: "110",
         fixed: "right",
-        render(row) {
+        render(row, index) {
           return (
             <>
               <NSpace>
@@ -82,6 +83,14 @@ export default defineComponent({
                   onClick={() => useFn(row)}
                 >
                   use
+                </NButton>
+                <NButton
+                  ghost
+                  size="tiny"
+                  type="error"
+                  onClick={() => useRm(index)}
+                >
+                  delete
                 </NButton>
               </NSpace>
             </>
@@ -110,6 +119,10 @@ export default defineComponent({
       props.visible.value = false;
     };
 
+    const useRemove = (index) => {
+      store.useShareRmRow(index);
+    };
+
     return () => {
       return (
         <NDrawer
@@ -127,6 +140,7 @@ export default defineComponent({
               scroll-x={500}
               columns={createColumns({
                 useFn: (row) => useCurrent(row),
+                useRm: (index) => useRemove(index),
               })}
               rowKey={(row) => row.id}
               data={store.syncTableData}

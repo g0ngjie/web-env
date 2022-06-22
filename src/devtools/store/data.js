@@ -208,6 +208,11 @@ export const useData = defineStore('data', () => {
         }
     }
 
+    // 共享环境数据移除
+    const useShareRmRow = (index) => {
+        syncTableData.value.splice(index, 1)
+    }
+
     return {
         tableData,
         syncTableData,
@@ -224,5 +229,6 @@ export const useData = defineStore('data', () => {
         cleanAllEnv,
         syncRow,
         useShareRow,
+        useShareRmRow,
     }
 })
