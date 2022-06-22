@@ -31,6 +31,8 @@ function syncEnvShare(list) {
 export const useData = defineStore('data', () => {
     // 本地环境数据
     const tableData = ref([])
+    // 数据加载状态
+    const tableLoaded = ref(false)
     // 共享环境数据
     const syncTableData = ref([])
 
@@ -39,6 +41,7 @@ export const useData = defineStore('data', () => {
         const getHost = await usePageHost()
         __ENV_DATA_KEY__ = `__ENV_DATA_KEY__${getHost}`
         tableData.value = await useChromeLocalEnv(__ENV_DATA_KEY__)
+        tableLoaded.value = true
         syncTableData.value = await useChromeShareEnv()
     })
 
@@ -203,6 +206,7 @@ export const useData = defineStore('data', () => {
 
     return {
         tableData,
+        tableLoaded,
         syncTableData,
         form,
         addEnv,

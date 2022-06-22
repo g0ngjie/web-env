@@ -121,6 +121,7 @@ export default defineComponent({
           size="small"
           bordered={false}
           striped
+          loading={!store.tableLoaded}
           single-line={false}
           scroll-x={500}
           columns={createColumns({

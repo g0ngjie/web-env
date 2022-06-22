@@ -48,6 +48,7 @@ export function useSyncEnvTheme(theme) {
 // 本地数据列表获取
 export function useChromeLocalEnv(key) {
     return new Promise(resolve => {
+        if (!chrome.storage) resolve([])
         chrome.storage?.local.get([key], (res) => {
             if (res[key] && typeIs(res[key]) === 'array') {
                 resolve(res[key])
