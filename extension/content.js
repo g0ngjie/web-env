@@ -69,4 +69,9 @@ chrome.runtime.onMessage.addListener((msg) => {
             value: msg.value
         })
     }
+    if (msg.type === "__popups_change_env" && msg.to === "content") {
+        mergeEnvStore(msg.value)
+        const isConfirm = window.confirm("The env has changed, is it refreshed?")
+        if (isConfirm) window.location.reload()
+    }
 });

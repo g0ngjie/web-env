@@ -39,3 +39,18 @@ export function useChromeLocalEnv(key) {
         })
     })
 }
+
+// 通信: 开关当前环境变量
+export function useNoticeEnv(env) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        const { url } = tabs[0]
+        // 非访问tab页
+        if (!url) return
+        const { globalKey, dynamicEnvs: envs, switchOn: bool } = env
+        chrome.tabs.sendMessage(tabs[0].id, {
+            type: "__popups_change_env",
+            to: "content",
+            value: { globalKey, envs, bool }
+        })
+    });
+}
