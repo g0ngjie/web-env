@@ -15,41 +15,6 @@ import CleanIcon from "./clean";
 // 本地数据
 let __ENV_DATA_KEY__ = "__ENV_DATA_KEY__";
 
-const listData = [
-  {
-    id: "",
-    switchOn: false,
-    title: "test",
-    description: "",
-    globalKey: "",
-    dynamicEnvs: [{ key: "", type: "string", value: "" }],
-  },
-  {
-    id: "",
-    switchOn: false,
-    title: "场景引起test环境测试",
-    description: "",
-    globalKey: "",
-    dynamicEnvs: [{ key: "", type: "string", value: "" }],
-  },
-  {
-    id: "",
-    switchOn: false,
-    title: "asdfasdf",
-    description: "",
-    globalKey: "",
-    dynamicEnvs: [{ key: "", type: "string", value: "" }],
-  },
-  {
-    id: "",
-    switchOn: false,
-    title:
-      "场景引起test环境测试场景引起test环境测试场景引起test环境测试场景引起test环境测试",
-    description: "",
-    globalKey: "",
-    dynamicEnvs: [{ key: "", type: "string", value: "" }],
-  },
-];
 export default defineComponent({
   setup() {
     const list = ref([]);
@@ -62,8 +27,6 @@ export default defineComponent({
       const localData = await useChromeLocalEnv(__ENV_DATA_KEY__);
       list.value = localData;
     });
-    // TODO:
-    // list.value = listData;
 
     const handleSwitchFn = (env) => {
       // 更新本地数据
