@@ -11,7 +11,7 @@ import {
   NSpace,
   NAlert,
 } from "naive-ui";
-import { EnvFieldType as Type } from "@devtools/common/enum";
+import { EnvFieldType as Type } from "@/common/enum";
 import { useData } from "@devtools/store/data";
 import { isNumber } from "@alrale/common-lib";
 

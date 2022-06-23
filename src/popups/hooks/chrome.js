@@ -1,3 +1,4 @@
+import { packagingEnv } from "@/common/lib";
 import { typeIs } from "@alrale/common-lib";
 
 // 获取当前标签页
@@ -50,7 +51,8 @@ export function useNoticeEnv(env) {
         const { url } = tabs[0]
         // 非访问tab页
         if (!url) return
-        const { globalKey, dynamicEnvs: envs, switchOn: bool } = env
+        const { globalKey, dynamicEnvs, switchOn: bool } = env
+        const envs = packagingEnv(dynamicEnvs)
         // popups 通知devtools数据已经便更
         chrome.runtime.sendMessage({
             type: "__popups_change_env",

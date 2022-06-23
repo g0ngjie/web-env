@@ -8,7 +8,7 @@ import {
 } from "naive-ui";
 import { useData } from "@devtools/store/data";
 import { useTheme } from "@devtools/store/theme";
-import { SyncType } from "@devtools/common/enum";
+import { SyncType } from "@/common/enum";
 
 export default defineComponent({
   props: {

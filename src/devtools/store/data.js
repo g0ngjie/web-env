@@ -1,7 +1,7 @@
 
 import { ref, watch, onBeforeMount } from "vue";
 import { defineStore } from "pinia";
-import { EnvFieldType, SyncType } from "@devtools/common/enum";
+import { EnvFieldType, SyncType } from "@/common/enum";
 import {
     useNoticeEnv,
     useNoticeRmEnv,
@@ -13,6 +13,7 @@ import {
     useListenerChange,
 } from "@devtools/hooks/chrome";
 import { uuid, deepOClone } from "@alrale/common-lib";
+import { packagingEnv } from "@/common/lib";
 
 // 本地数据
 let __ENV_DATA_KEY__ = "__ENV_DATA_KEY__"
@@ -87,25 +88,6 @@ export const useData = defineStore('data', () => {
             bool = false
         } else envWarning.value = ''
         return bool
-    }
-    // packaging environment variables
-    const packagingEnv = (envs) => {
-        let target = {}
-        envs.forEach(item => {
-            const { type, key, value } = item
-            switch (type) {
-                case EnvFieldType.String:
-                    target[key] = value
-                    break;
-                case EnvFieldType.Number:
-                    target[key] = +value
-                    break;
-                case EnvFieldType.Boolean:
-                    target[key] = { 'true': true, 'false': false }[value]
-                    break;
-            }
-        })
-        return target
     }
 
     // form submit
