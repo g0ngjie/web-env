@@ -31,7 +31,6 @@ export default defineComponent({
 
     onMounted(async () => {
       const { url, highlighted } = await useCurrentTab();
-      console.log(highlighted, "highlighted");
       if (!url) return;
       const host = useGetHost(url);
       __ENV_DATA_KEY__ = `__ENV_DATA_KEY__${host}`;
@@ -39,7 +38,7 @@ export default defineComponent({
       list.value = localData;
     });
     // TODO:
-    // list.value = listData;
+    list.value = listData;
 
     const handleSwitchFn = (env) => {
       // 更新本地数据

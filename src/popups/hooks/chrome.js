@@ -4,7 +4,7 @@ import { typeIs } from "@alrale/common-lib";
 // 获取当前标签页
 export function useCurrentTab() {
     return new Promise(resolve => {
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs?.query({ active: true, currentWindow: true }, function (tabs) {
             const url = tabs[0].url;
             const title = tabs[0].title;
             const highlighted = tabs[0].highlighted;
@@ -33,7 +33,7 @@ export const useGetHost = (url) => {
 // 本地数据列表获取
 export function useChromeLocalEnv(key) {
     return new Promise(resolve => {
-        chrome.storage.local.get([key], (res) => {
+        chrome.storage?.local.get([key], (res) => {
             if (res[key] && typeIs(res[key]) === 'array') {
                 resolve(res[key])
             } else resolve([])
@@ -47,7 +47,7 @@ export function useChromeSyncLocalEnv(key, data) {
 
 // 通信: 开关当前环境变量
 export function useNoticeEnv(env) {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs?.query({ active: true, currentWindow: true }, function (tabs) {
         const { url } = tabs[0]
         // 非访问tab页
         if (!url) return
@@ -69,7 +69,7 @@ export function useNoticeEnv(env) {
 
 // 通信: 清理当前环境变量
 export function useNoticeCleanAllEnv() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs?.query({ active: true, currentWindow: true }, function (tabs) {
         const { url } = tabs[0]
         // 非访问tab页
         if (!url) return
