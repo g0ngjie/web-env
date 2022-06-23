@@ -15,6 +15,15 @@
   border-radius: 5px;
   padding: 10px;
   overflow-y: scroll;
+  background-color: #f6f3eb;
+}
+
+.label {
+  color: #fff;
+  font-size: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis; //溢出用省略号显示
+  white-space: nowrap; //溢出不换行
 }
 
 .empty {

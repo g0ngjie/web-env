@@ -1,5 +1,5 @@
 import { defineComponent, ref, onMounted } from "vue";
-import { NSwitch, NSpace, NForm, NFormItem, NEllipsis, NEmpty } from "naive-ui";
+import { NSwitch, NSpace, NEmpty } from "naive-ui";
 import {
   useCurrentTab,
   useGetHost,
@@ -19,7 +19,32 @@ const listData = [
   {
     id: "",
     switchOn: false,
-    title: "",
+    title: "test",
+    description: "",
+    globalKey: "",
+    dynamicEnvs: [{ key: "", type: "string", value: "" }],
+  },
+  {
+    id: "",
+    switchOn: false,
+    title: "场景引起test环境测试",
+    description: "",
+    globalKey: "",
+    dynamicEnvs: [{ key: "", type: "string", value: "" }],
+  },
+  {
+    id: "",
+    switchOn: false,
+    title: "asdfasdf",
+    description: "",
+    globalKey: "",
+    dynamicEnvs: [{ key: "", type: "string", value: "" }],
+  },
+  {
+    id: "",
+    switchOn: false,
+    title:
+      "场景引起test环境测试场景引起test环境测试场景引起test环境测试场景引起test环境测试",
     description: "",
     globalKey: "",
     dynamicEnvs: [{ key: "", type: "string", value: "" }],
@@ -38,7 +63,7 @@ export default defineComponent({
       list.value = localData;
     });
     // TODO:
-    list.value = listData;
+    // list.value = listData;
 
     const handleSwitchFn = (env) => {
       // 更新本地数据
@@ -58,28 +83,60 @@ export default defineComponent({
       useNoticeCleanAllEnv();
     };
 
+    const railStyle = ({ focused, checked }) => {
+      const style = {};
+      if (checked) {
+        style.background = "#2080f0";
+        if (focused) {
+          style.boxShadow = "0 0 0 2px #2080f040";
+        }
+      } else {
+        style.background = "#d03050";
+        if (focused) {
+          style.boxShadow = "0 0 0 2px #d0305040";
+        }
+      }
+      return style;
+    };
+
     return () => {
       return (
         <div class={styl.container}>
           {list.value.length > 0 && <CleanIcon onClick={handleCleanFn} />}
-          <NForm label-width="auto" size="small">
-            <NSpace vertical size="small">
-              {list.value.map((env) => {
-                return (
-                  <NEllipsis style={{ maxWidth: "170px" }}>
-                    <NFormItem label={env.title}>
-                      <NSwitch
-                        size="small"
-                        v-model:value={env.switchOn}
-                        round={false}
-                        onUpdate:value={() => handleSwitchFn(env)}
-                      />
-                    </NFormItem>
-                  </NEllipsis>
-                );
-              })}
-            </NSpace>
-          </NForm>
+          <NSpace vertical size="small">
+            {list.value.map((env) => {
+              return (
+                <NSwitch
+                  size="small"
+                  v-model:value={env.switchOn}
+                  rail-style={railStyle}
+                  round={false}
+                  onUpdate:value={() => handleSwitchFn(env)}
+                >
+                  {{
+                    checked: () => (
+                      <span
+                        title={env.title}
+                        style={{ maxWidth: "170px" }}
+                        class={styl.label}
+                      >
+                        {env.title}
+                      </span>
+                    ),
+                    unchecked: () => (
+                      <span
+                        title={env.title}
+                        style={{ maxWidth: "170px" }}
+                        class={styl.label}
+                      >
+                        {env.title}
+                      </span>
+                    ),
+                  }}
+                </NSwitch>
+              );
+            })}
+          </NSpace>
           {list.value.length === 0 && (
             <NEmpty class={styl.empty}>There's nothing here.</NEmpty>
           )}
