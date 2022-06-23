@@ -11,7 +11,16 @@
   background-color: var(--web-env-main-color);
   transition: 0.35s var(--cubic-bezier-ease-in-out);
   min-width: 180px;
-  min-height: 260px;
+  height: 260px;
   border-radius: 5px;
   padding: 10px;
+  overflow-y: scroll;
+}
+
+.empty {
+  min-width: 180px;
+  height: 260px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

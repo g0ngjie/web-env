@@ -1,5 +1,5 @@
 import { defineComponent, ref, onMounted } from "vue";
-import { NSwitch, NSpace, NForm, NFormItem, NEllipsis } from "naive-ui";
+import { NSwitch, NSpace, NForm, NFormItem, NEllipsis, NEmpty } from "naive-ui";
 import {
   useCurrentTab,
   useGetHost,
@@ -13,6 +13,7 @@ import { deepOClone } from "@alrale/common-lib";
 // 本地数据
 let __ENV_DATA_KEY__ = "__ENV_DATA_KEY__";
 
+const listData = [{}];
 export default defineComponent({
   setup() {
     const list = ref([]);
@@ -34,8 +35,8 @@ export default defineComponent({
     return () => {
       return (
         <div class={styl.container}>
-          <NSpace vertical size="small">
-            <NForm label-width="auto" size="small">
+          <NForm label-width="auto" size="small">
+            <NSpace vertical size="small">
               {list.value.map((env) => {
                 return (
                   <NEllipsis style={{ maxWidth: "170px" }}>
@@ -50,8 +51,11 @@ export default defineComponent({
                   </NEllipsis>
                 );
               })}
-            </NForm>
-          </NSpace>
+            </NSpace>
+          </NForm>
+          {list.value.length === 0 && (
+            <NEmpty class={styl.empty}>There's nothing here.</NEmpty>
+          )}
         </div>
       );
     };
