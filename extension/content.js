@@ -69,9 +69,16 @@ chrome.runtime.onMessage.addListener((msg) => {
             value: msg.value
         })
     }
+    // popups 通知环境变量变更
     if (msg.type === "__popups_change_env" && msg.to === "content") {
         mergeEnvStore(msg.value)
         const isConfirm = window.confirm("The env has changed, is it refreshed?")
+        if (isConfirm) window.location.reload()
+    }
+    // popups 通知环境变量全部清除
+    if (msg.type === "__popups_clean_env" && msg.to === "content") {
+        setStore(__ENV_CONTENT_KEY__, {})
+        const isConfirm = window.confirm("The environment has been cleaned, is it refreshed?")
         if (isConfirm) window.location.reload()
     }
 });

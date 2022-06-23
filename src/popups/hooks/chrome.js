@@ -66,3 +66,22 @@ export function useNoticeEnv(env) {
         })
     });
 }
+
+// 通信: 清理当前环境变量
+export function useNoticeCleanAllEnv() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        const { url } = tabs[0]
+        // 非访问tab页
+        if (!url) return
+        // popups 通知devtools数据已经便更
+        chrome.runtime.sendMessage({
+            type: "__popups_clean_env",
+            to: "devtools",
+        });
+        // 通知content页面数据刷新
+        chrome.tabs.sendMessage(tabs[0].id, {
+            type: "__popups_clean_env",
+            to: "content",
+        })
+    });
+}
