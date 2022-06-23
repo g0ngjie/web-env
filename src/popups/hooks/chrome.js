@@ -57,13 +57,12 @@ export function useNoticeEnv(env) {
         chrome.runtime.sendMessage({
             type: "__popups_change_env",
             to: "devtools",
-        }, () => {
-            // 通知content页面数据刷新
-            chrome.tabs.sendMessage(tabs[0].id, {
-                type: "__popups_change_env",
-                to: "content",
-                value: { globalKey, envs, bool }
-            })
         });
+        // 通知content页面数据刷新
+        chrome.tabs.sendMessage(tabs[0].id, {
+            type: "__popups_change_env",
+            to: "content",
+            value: { globalKey, envs, bool }
+        })
     });
 }

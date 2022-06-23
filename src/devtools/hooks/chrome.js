@@ -20,10 +20,9 @@ export function useNoticeRmEnv(globalKey, envs) {
 
 // 监听: popups变更本地环境
 export function useListenerChange(fn) {
-    chrome.runtime?.onMessage.addListener((msg, _, sendResponse) => {
+    chrome.runtime?.onMessage.addListener((msg) => {
         if (msg.type === "__popups_change_env" && msg.to === "devtools") {
             fn()
-            sendResponse()
         }
     });
 }
