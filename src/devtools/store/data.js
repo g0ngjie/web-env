@@ -10,6 +10,7 @@ import {
     useChromeShareEnv,
     useChromeSyncLocalEnv,
     useChromeSyncShareEnv,
+    useListenerChange,
 } from "@devtools/hooks/chrome";
 import { uuid, deepOClone } from "@alrale/common-lib";
 
@@ -36,12 +37,20 @@ export const useData = defineStore('data', () => {
     // 共享环境数据
     const syncTableData = ref([])
 
-    // 初始化加载
-    onBeforeMount(async () => {
+    // 获取本地数据
+    const loadLocalData = async () => {
         const getHost = await usePageHost()
         __ENV_DATA_KEY__ = `__ENV_DATA_KEY__${getHost}`
         tableData.value = await useChromeLocalEnv(__ENV_DATA_KEY__)
         tableLoaded.value = true
+    }
+
+    // 监听popups变更本地数据
+    useListenerChange(() => loadLocalData())
+
+    // 初始化加载
+    onBeforeMount(async () => {
+        await loadLocalData()
         syncTableData.value = await useChromeShareEnv()
     })
 

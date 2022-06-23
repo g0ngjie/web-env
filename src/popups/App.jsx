@@ -4,9 +4,11 @@ import {
   useCurrentTab,
   useGetHost,
   useChromeLocalEnv,
+  useChromeSyncLocalEnv,
   useNoticeEnv,
 } from "@popups/hooks/chrome";
 import styl from "./app.module.scss";
+import { deepOClone } from "@alrale/common-lib";
 
 // 本地数据
 let __ENV_DATA_KEY__ = "__ENV_DATA_KEY__";
@@ -24,6 +26,9 @@ export default defineComponent({
     });
 
     const handleSwitchFn = (env) => {
+      // 更新本地数据
+      const data = deepOClone(list.value);
+      useChromeSyncLocalEnv(__ENV_DATA_KEY__, data);
       useNoticeEnv(env);
     };
     return () => {

@@ -39,6 +39,10 @@ export function useChromeLocalEnv(key) {
         })
     })
 }
+// 本地数据列表同步
+export function useChromeSyncLocalEnv(key, data) {
+    chrome.storage?.local.set({ [key]: data })
+}
 
 // 通信: 开关当前环境变量
 export function useNoticeEnv(env) {
@@ -47,10 +51,17 @@ export function useNoticeEnv(env) {
         // 非访问tab页
         if (!url) return
         const { globalKey, dynamicEnvs: envs, switchOn: bool } = env
-        chrome.tabs.sendMessage(tabs[0].id, {
+        // popups 通知devtools数据已经便更
+        chrome.runtime.sendMessage({
             type: "__popups_change_env",
-            to: "content",
-            value: { globalKey, envs, bool }
-        })
+            to: "devtools",
+        }, () => {
+            // 通知content页面数据刷新
+            chrome.tabs.sendMessage(tabs[0].id, {
+                type: "__popups_change_env",
+                to: "content",
+                value: { globalKey, envs, bool }
+            })
+        });
     });
 }
