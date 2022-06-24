@@ -1,5 +1,15 @@
 console.log("web env content.js")
 
+// 添加仪表盘
+const dashboard = document.createElement("script");
+dashboard.setAttribute("type", "text/javascript");
+dashboard.setAttribute("src", chrome.runtime.getURL("dashboard/dashboard.umd.js"));
+document.documentElement.appendChild(dashboard);
+dashboard.addEventListener("load", () => {
+    const dashboardEl = document.createElement("env-dashboard")
+    document.documentElement.appendChild(dashboardEl);
+})
+
 // 在页面上插入代码
 const script = document.createElement("script");
 script.setAttribute("type", "text/javascript");
