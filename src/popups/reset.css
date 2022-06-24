@@ -1,10 +1,18 @@
+:root {
+  --web-env-main-color: #ffffff;
+  --cubic-bezier-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --global-height: 260px;
+  --global-width: 400px;
+}
+
 html,
 body,
 #popups {
-  height: 100%;
-  width: 100%;
+  width: var(--global-width);
+  height: var(--global-height);
   margin: 0;
   padding: 0;
+  background-color: #ebeef5;
 }
 ::-webkit-scrollbar {
   display: none; /* Chrome Safari */

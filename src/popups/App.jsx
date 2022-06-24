@@ -1,5 +1,5 @@
 import { defineComponent, ref, onMounted } from "vue";
-import { NSwitch, NSpace, NEmpty } from "naive-ui";
+import { NSwitch, NEmpty, NScrollbar } from "naive-ui";
 import {
   useCurrentTab,
   useGetHost,
@@ -65,41 +65,50 @@ export default defineComponent({
     return () => {
       return (
         <div class={styl.container}>
-          {list.value.length > 0 && <CleanIcon onClick={handleCleanFn} />}
-          <NSpace vertical size="small">
-            {list.value.map((env) => {
-              return (
-                <NSwitch
-                  size="small"
-                  v-model:value={env.switchOn}
-                  rail-style={railStyle}
-                  round={false}
-                  onUpdate:value={() => handleSwitchFn(env)}
-                >
-                  {{
-                    checked: () => (
-                      <span
-                        title={env.title}
-                        style={{ maxWidth: "170px" }}
-                        class={styl.label}
+          {list.value.length > 0 && (
+            <>
+              <div class={[styl.row, styl.options]} onClick={handleCleanFn}>
+                <CleanIcon />
+                <span>Clean</span>
+              </div>
+              <NScrollbar>
+                {list.value.map((env) => {
+                  return (
+                    <div class={styl.row}>
+                      <NSwitch
+                        size="small"
+                        v-model:value={env.switchOn}
+                        rail-style={railStyle}
+                        round={false}
+                        onUpdate:value={() => handleSwitchFn(env)}
                       >
-                        {env.title}
-                      </span>
-                    ),
-                    unchecked: () => (
-                      <span
-                        title={env.title}
-                        style={{ maxWidth: "170px" }}
-                        class={styl.label}
-                      >
-                        {env.title}
-                      </span>
-                    ),
-                  }}
-                </NSwitch>
-              );
-            })}
-          </NSpace>
+                        {{
+                          checked: () => (
+                            <span
+                              title={env.title}
+                              style={{ maxWidth: "170px" }}
+                              class={styl.label}
+                            >
+                              {env.title}
+                            </span>
+                          ),
+                          unchecked: () => (
+                            <span
+                              title={env.title}
+                              style={{ maxWidth: "170px" }}
+                              class={styl.label}
+                            >
+                              {env.title}
+                            </span>
+                          ),
+                        }}
+                      </NSwitch>
+                    </div>
+                  );
+                })}
+              </NScrollbar>
+            </>
+          )}
           {list.value.length === 0 && (
             <NEmpty class={styl.empty}>There's nothing here.</NEmpty>
           )}

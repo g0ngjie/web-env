@@ -3,17 +3,11 @@ import { NIcon } from "naive-ui";
 import styl from "./clean.module.scss";
 
 export default defineComponent({
-  props: {
-    onClick: {
-      type: Function,
-      default: () => {},
-    },
-  },
-  setup(props) {
+  setup() {
     return () => {
       return (
         <>
-          <NIcon size="17" class={styl.icon} onClick={props.onClick}>
+          <NIcon size="17" class={styl.icon}>
             <svg
               t="1655652303685"
               class="icon"

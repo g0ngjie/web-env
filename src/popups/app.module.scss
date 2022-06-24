@@ -1,8 +1,3 @@
-:root {
-  --web-env-main-color: #ffffff;
-  --cubic-bezier-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 .container {
   // 取消用户选中
   -moz-user-select: none;
@@ -10,24 +5,54 @@
   user-select: none;
   background-color: var(--web-env-main-color);
   transition: 0.35s var(--cubic-bezier-ease-in-out);
-  min-width: 180px;
-  height: 260px;
+  height: 100%;
   border-radius: 5px;
-  padding: 10px;
+  padding: 5px 10px;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  height: 20px;
+  background-color: #f2f6fc;
+  padding: 5px 10px;
+  margin-bottom: 2px;
+  cursor: pointer;
+  &:hover {
+    background-color: #dcdfe6;
+  }
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.options {
+  margin-bottom: 5px;
+  & > span {
+    font-size: 12px;
+    color: #7d828b;
+    margin-left: 10px;
+  }
+  &:active {
+    background-color: #ccccd0;
+    & > i {
+      transform: scale(0.9);
+    }
+  }
 }
 
 .label {
   color: #fff;
-  font-size: 1px;
+  font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis; //溢出用省略号显示
   white-space: nowrap; //溢出不换行
 }
 
 .empty {
-  min-width: 180px;
-  height: 260px;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
