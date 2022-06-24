@@ -21,7 +21,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         devtools: path.resolve(__dirname, 'index.html'),
-        popups: path.resolve(__dirname, 'popups.html')
+        popups: path.resolve(__dirname, 'popups.html'),
+        dashboard: path.resolve(__dirname, 'dashboard.html'),
       },
       output: {
         chunkFileNames: 'static/js/[name]-[hash].js',
