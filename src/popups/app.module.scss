@@ -7,7 +7,7 @@
   transition: 0.35s var(--cubic-bezier-ease-in-out);
   height: 100%;
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 5px 2px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@
   }
   display: flex;
   align-items: center;
-  border-radius: 5px;
+  border-radius: 2px;
 }
 
 .options {
