@@ -48,15 +48,17 @@ export default defineComponent({
 
     const railStyle = ({ focused, checked }) => {
       const style = {};
+      // 选中颜色 #13c2c2
+      // 未选中颜色 #f5222d
       if (checked) {
-        style.background = "#2080f0";
+        style.background = "#13c2c2";
         if (focused) {
-          style.boxShadow = "0 0 0 2px #2080f040";
+          style.boxShadow = "0 0 0 2px #13c2c240";
         }
       } else {
-        style.background = "#d03050";
+        style.background = "#f5222d";
         if (focused) {
-          style.boxShadow = "0 0 0 2px #d0305040";
+          style.boxShadow = "0 0 0 2px #f5222d40";
         }
       }
       return style;
