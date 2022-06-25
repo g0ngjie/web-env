@@ -1,5 +1,5 @@
 <template>
-  <div v-if="envs.length > 0" class="container operate">
+  <div ref="domRef" v-if="envs.length > 0" class="container auto-put-away">
     <NDescriptions
       v-for="(env, index) in envs"
       :key="index"
@@ -23,7 +23,6 @@
 
 <script>
 import { ref, defineComponent } from "vue";
-import { useMouse } from "@vueuse/core";
 import { useCurrentEnv } from "./hooks/chrome";
 import { NDescriptions, NDescriptionsItem } from "naive-ui";
 
@@ -31,6 +30,7 @@ export default defineComponent({
   components: { NDescriptions, NDescriptionsItem },
   setup() {
     const envs = ref([]);
+    const domRef = ref(null);
     useCurrentEnv().then((target) => {
       Object.keys(target).forEach((key) => {
         envs.value.push({
@@ -39,19 +39,19 @@ export default defineComponent({
         });
       });
     });
-    const { x, y } = useMouse();
-    return {
-      envs,
-    };
+
+    setTimeout(() => {
+      if (domRef.value)
+        domRef.value.style.left = `-${domRef.value.offsetWidth - 8}px`;
+    }, 1000);
+
+    return { envs, domRef };
   },
 });
 </script>
 
 <style>
 .container {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
   background-color: rgba(38, 38, 38, 0.5);
   border-radius: 5px;
   box-shadow: 0 0 1px #f5f5f5;
@@ -59,13 +59,16 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 0;
+  top: 20px;
   left: 0;
   z-index: 999;
   color: #fff;
 }
 
-.operate {
-  cursor: move;
+.auto-put-away {
+  transition: all 0.2s;
+}
+.auto-put-away:hover {
+  left: 0 !important;
 }
 </style>
