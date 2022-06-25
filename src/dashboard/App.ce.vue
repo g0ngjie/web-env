@@ -42,7 +42,7 @@ export default defineComponent({
 
     setTimeout(() => {
       if (domRef.value)
-        domRef.value.style.left = `-${domRef.value.offsetWidth - 8}px`;
+        domRef.value.style.left = `-${domRef.value.offsetWidth - 5}px`;
     }, 1000);
 
     return { envs, domRef };
@@ -52,8 +52,8 @@ export default defineComponent({
 
 <style>
 .container {
-  background-color: rgba(38, 38, 38, 0.5);
-  border-radius: 5px;
+  background-color: rgba(38, 38, 38, 0.4);
+  border-radius: 3px;
   box-shadow: 0 0 1px #f5f5f5;
   padding: 5px;
   display: flex;
@@ -63,6 +63,7 @@ export default defineComponent({
   left: 0;
   z-index: 999;
   color: #fff;
+  font-size: 12px;
 }
 
 .auto-put-away {
