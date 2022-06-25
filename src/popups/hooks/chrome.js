@@ -85,3 +85,36 @@ export function useNoticeCleanAllEnv() {
         })
     });
 }
+
+
+// 仪表盘
+const __ENV_LOCAL_DASHBOARD__ = "__ENV_LOCAL_DASHBOARD__"
+// 本地仪表盘状态获取
+export function useChromeLocalDashboardStatus() {
+    return new Promise(resolve => {
+        chrome.storage?.local.get([__ENV_LOCAL_DASHBOARD__], (res) => {
+            if (typeIs(res[__ENV_LOCAL_DASHBOARD__]) === 'boolean') {
+                resolve(res[__ENV_LOCAL_DASHBOARD__])
+            } else resolve(false)
+        })
+    })
+}
+// 本地仪表盘状态更新
+export function useChromeLocalSyncDashboardStatus(bool) {
+    chrome.storage?.local.set({ [__ENV_LOCAL_DASHBOARD__]: bool })
+}
+// 通信: 仪表盘状态变更
+export function useNoticeUpdateDashboard(bool) {
+    useChromeLocalSyncDashboardStatus(bool)
+    chrome.tabs?.query({ active: true, currentWindow: true }, function (tabs) {
+        const { url } = tabs[0]
+        // 非访问tab页
+        if (!url) return
+        // 通知content页面数据刷新
+        chrome.tabs.sendMessage(tabs[0].id, {
+            type: "__popups_sync_dashboard",
+            to: "content",
+            value: bool
+        })
+    });
+}

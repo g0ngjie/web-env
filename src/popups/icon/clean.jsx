@@ -1,6 +1,6 @@
 import { defineComponent } from "vue";
 import { NIcon } from "naive-ui";
-import styl from "./clean.module.scss";
+import styl from "./icon.module.scss";
 
 export default defineComponent({
   setup() {

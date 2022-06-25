@@ -7,10 +7,13 @@ import {
   useChromeSyncLocalEnv,
   useNoticeEnv,
   useNoticeCleanAllEnv,
+  useChromeLocalDashboardStatus,
+  useNoticeUpdateDashboard,
 } from "@popups/hooks/chrome";
 import styl from "./app.module.scss";
 import { deepOClone } from "@alrale/common-lib";
-import CleanIcon from "./clean";
+import CleanIcon from "./icon/clean";
+import Dashboard from "./icon/dashboard";
 
 // 本地数据
 let __ENV_DATA_KEY__ = "__ENV_DATA_KEY__";
@@ -18,6 +21,7 @@ let __ENV_DATA_KEY__ = "__ENV_DATA_KEY__";
 export default defineComponent({
   setup() {
     const list = ref([]);
+    const dashboardStatus = ref(false);
 
     onMounted(async () => {
       const { url, highlighted } = await useCurrentTab();
@@ -26,6 +30,8 @@ export default defineComponent({
       __ENV_DATA_KEY__ = `__ENV_DATA_KEY__${host}`;
       const localData = await useChromeLocalEnv(__ENV_DATA_KEY__);
       list.value = localData;
+      // 仪表盘状态
+      dashboardStatus.value = await useChromeLocalDashboardStatus();
     });
 
     const handleSwitchFn = (env) => {
@@ -64,6 +70,13 @@ export default defineComponent({
       return style;
     };
 
+    // 变更仪表盘状态
+    const handleUpdateDashboard = () => {
+      const bool = !dashboardStatus.value;
+      dashboardStatus.value = bool;
+      useNoticeUpdateDashboard(bool);
+    };
+
     return () => {
       return (
         <div class={styl.container}>
@@ -71,7 +84,16 @@ export default defineComponent({
             <>
               <div class={[styl.row, styl.options]} onClick={handleCleanFn}>
                 <CleanIcon />
-                <span>Clean</span>
+                <span>Clear all environment variables</span>
+              </div>
+              <div
+                class={[styl.row, styl.options]}
+                onClick={handleUpdateDashboard}
+              >
+                <Dashboard />
+                <span class={{ [styl.noUnderline]: !dashboardStatus.value }}>
+                  Dashboard Status
+                </span>
               </div>
               <NScrollbar>
                 {list.value.map((env) => {

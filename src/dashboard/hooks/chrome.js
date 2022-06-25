@@ -6,7 +6,7 @@ export function useCurrentEnv() {
             "message",
             (event) => {
                 const data = event.data;
-                if (data.type === "__init_envs" && data.to === "document") {
+                if (["__init_envs", "__init_dashboard_envs"].includes(data.type) && ["document", "dashboard"].includes(data.to)) {
                     resolve(data.value);
                 }
             },

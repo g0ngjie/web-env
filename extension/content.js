@@ -1,13 +1,28 @@
 console.log("web env content.js")
 
+// 仪表盘
+const __ENV_LOCAL_DASHBOARD__ = "__ENV_LOCAL_DASHBOARD__"
+function getDashboardStatus() {
+    return new Promise((resolve) => {
+        chrome.storage.local.get([__ENV_LOCAL_DASHBOARD__], (res) => {
+            resolve(res[__ENV_LOCAL_DASHBOARD__] || false);
+        })
+    })
+}
+// 当前仪表盘
+let dashboardEl = null
+function mountDashboard() {
+    dashboardEl = document.createElement("env-dashboard")
+    document.documentElement.appendChild(dashboardEl);
+}
 // 添加仪表盘
 const dashboard = document.createElement("script");
 dashboard.setAttribute("type", "text/javascript");
 dashboard.setAttribute("src", chrome.runtime.getURL("dashboard/dashboard.umd.js"));
 document.documentElement.appendChild(dashboard);
-dashboard.addEventListener("load", () => {
-    const dashboardEl = document.createElement("env-dashboard")
-    document.documentElement.appendChild(dashboardEl);
+dashboard.addEventListener("load", async () => {
+    const bool = await getDashboardStatus()
+    if (bool) mountDashboard()
 })
 
 // 在页面上插入代码
@@ -90,5 +105,22 @@ chrome.runtime.onMessage.addListener((msg) => {
         setStore(__ENV_CONTENT_KEY__, {})
         const isConfirm = window.confirm("The environment has been cleaned, is it refreshed?")
         if (isConfirm) window.location.reload()
+    }
+    // 仪表盘状态变更
+    if (msg.type === "__popups_sync_dashboard" && msg.to === "content") {
+        if (msg.value) {
+            // 初始化环境变量
+            getEnvStore().then(envs => {
+                // 发送给document的消息
+                window.postMessage({
+                    type: "__init_dashboard_envs",
+                    to: "dashboard",
+                    value: envs,
+                });
+                mountDashboard()
+            })
+        } else {
+            dashboardEl && dashboardEl.parentNode.removeChild(dashboardEl)
+        }
     }
 });
