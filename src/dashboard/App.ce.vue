@@ -1,5 +1,5 @@
 <template>
-  <div class="container operate">
+  <div v-if="envs.length > 0" class="container operate">
     <NDescriptions
       v-for="(env, index) in envs"
       :key="index"

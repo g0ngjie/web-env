@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "rm -rf web-env && run-p build:panel build:tools",
-    "watch": "vite build --watch",
+    "watch:panel": "cross-env MODE=panel vite build --watch",
+    "watch:tools": "cross-env MODE=tools vite build --watch",
     "build:panel": "cross-env MODE=panel vite build",
     "build:tools": "cross-env MODE=tools vite build"
   },
