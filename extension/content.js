@@ -1,4 +1,4 @@
-console.log("web env content.js")
+// console.log("web env content.js")
 
 // 仪表盘
 const __ENV_LOCAL_DASHBOARD__ = "__ENV_LOCAL_DASHBOARD__"
@@ -74,7 +74,7 @@ async function mergeEnvStore(data) {
 
 // 接收background.js传来的信息，转发给document
 chrome.runtime.onMessage.addListener((msg) => {
-    console.log('content获取通过background传来的vue的msg', msg)
+    // console.log('content获取通过background传来的vue的msg', msg)
 
     if (msg.type === "__set_envs" && msg.to === "content") {
         // 同步数据
