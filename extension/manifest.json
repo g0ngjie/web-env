@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Web Env",
   "version": "1.0.0",
-  "description": "A tool to easily define browser environment variables",
+  "description": "一个可以轻松定义浏览器环境变量的工具",
   "author": "Gj",
   "background": {
     "service_worker": "background.js"
