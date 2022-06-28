@@ -1,9 +1,6 @@
 // 只有这里才可以设置环境变量
 const targetWindow = window
 
-const merge = Object.assign
-const isObject = (target) => Object.prototype.toString.call(target) === '[object Object]'
-
 // dynamic set window env
 const setDynamicEnv = (index = 0, keys = [], envs, target, isRemove) => {
     const key = keys[index]
@@ -21,6 +18,10 @@ const setDynamicEnv = (index = 0, keys = [], envs, target, isRemove) => {
                 delete target[key]
                 return
             }
+            // 函数在代码块内定义，避免影响全局
+            // 例：群晖后台 isObject已被定义
+            const merge = Object.assign
+            const isObject = (target) => Object.prototype.toString.call(target) === '[object Object]'
             // envs => { a: 1, b: 2}
             if (isObject(envs)) target[key] = merge(target[key], envs)
             else target[key] = envs // envs => any assignable value
