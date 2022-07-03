@@ -18,14 +18,20 @@ A tool to easily define browser environment variables
 3. 微型表盘显示
 4. 一键切换变量
 
-## Devtool
+## 使用效果
+
+### Devtool
 
 ![env_devtool](images/env_devtool.png)
 
-## Settings
+### Settings
 
 ![env_set](images/env_set.png)
 
-## Panel
+### Panel
 
 ![env_panel](images/env_panel.png)
+
+### Console
+
+![env_console](images/env_console.png)
