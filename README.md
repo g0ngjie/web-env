@@ -17,3 +17,15 @@ A tool to easily define browser environment variables
 2. 支持多级设置
 3. 微型表盘显示
 4. 一键切换变量
+
+## Devtool
+
+![env_devtool](images/env_devtool.png)
+
+## Settings
+
+![env_set](images/env_set.png)
+
+## Panel
+
+![env_panel](images/env_panel.png)
