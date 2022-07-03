@@ -20,6 +20,8 @@ A tool to easily define browser environment variables
 
 ## 使用效果
 
+打开开发者工具,Tab 栏切换到 Web Env
+
 ### Devtool
 
 ![env_devtool](images/env_devtool.png)
